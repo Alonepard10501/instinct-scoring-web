@@ -1,0 +1,12 @@
+Dieser Ordner ist ABSICHTLICH leer.
+
+Die Website laedt KEINE Schriften - weder eigene noch von fremden Servern
+(kein Google Fonts). Sie nutzt nur, was auf dem Geraet schon da ist:
+Saira/Rajdhani (falls installiert), sonst Bahnschrift, Segoe UI oder die
+Systemschrift. Das ist der Grund, warum die Seite ohne Zustimmungsbanner
+auskommt - es wird nichts an Dritte uebertragen.
+
+Wenn du spaeter doch eine eigene Schrift einbauen willst, gehoert sie hierher
+und muss in style.css unter --schrift-kopf / --schrift-text eingetragen werden.
+Dann aber die Datenschutzseite anpassen: dort steht ausdruecklich, dass keine
+Schriften geladen werden.

@@ -1,0 +1,8 @@
+# Beiseite gelegte Dateien - gehoeren nicht auf die Website
+_nicht-verwendet/
+*.sicherung
+*.vor-englisch
+
+# Windows
+Thumbs.db
+desktop.ini

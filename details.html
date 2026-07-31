@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Instinct Scoring im Detail — Bögen, Spine-Rechner, Wertungen</title>
+<meta name="description" content="Alles über Instinct Scoring: vier Bogenarten erklärt, der Spine-Rechner, das Glossar der Bogen-Begriffe, Wertungssysteme und die drei Preisstufen.">
+<meta name="theme-color" content="#07070A">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="bilder/marke/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-kapitel="instinct">
+
+<a class="sprunglink" href="#inhalt">Zum Inhalt springen</a>
+
+<div class="kulisse" aria-hidden="true"
+     style="background:linear-gradient(180deg,#0E100E,#1A1C1A 46%,#10140F)"></div>
+<div class="hologramm" aria-hidden="true"></div>
+<div class="gitter" aria-hidden="true"></div>
+<div class="koerner" aria-hidden="true"></div>
+
+<header class="kopf fest">
+ <div class="kopf-innen">
+  <a class="kopf-marke" href="index.html">
+    <img src="bilder/marke/icon-instinct.webp" alt="" width="30" height="30">
+    <span>Instinct<b>.</b></span>
+  </a>
+  <nav class="kopf-nav" aria-label="Navigation">
+    <a href="index.html">← Startseite</a>
+    <a href="https://alonepard10501.github.io/fanica/" rel="noopener">Entwicklerstudio ↗</a>
+  </nav>
+ </div>
+</header>
+
+<main id="inhalt" class="unterseite">
+  <div class="huelle">
+
+    <div class="kapitelkopf">
+      <p class="kennung">Instinct Scoring</p>
+      <div class="logo-paar">
+        <img class="kapitel-logo" src="bilder/marke/logo-instinct.webp"
+             alt="Instinct Scoring — Logo" width="260" height="260">
+      </div>
+      <h1>Die Scoring-App für Bogensport</h1>
+      <p class="kooperationszeile" data-t="instinct.kooperation"></p>
+    </div>
+
+    <p class="gross" style="max-width:64ch" data-t="instinct.positionierung"></p>
+
+    <!-- ---------- Die Startseite der App ---------- -->
+    <section class="unter-block">
+      <h2 data-t="instinct.startTitel">Die Startseite</h2>
+      <p class="leise" style="max-width:64ch" data-t="instinct.startText"></p>
+      <div class="startseite">
+        <div class="startseite-bild">
+          <div class="handy" data-neigen>
+            <img src="bilder/instinct/start.webp"
+                 srcset="bilder/instinct/start.webp 1x, bilder/instinct/start@2x.webp 2x"
+                 width="300" height="649" loading="lazy" decoding="async"
+                 data-t="instinct.bildStart2Alt" data-t-attr="alt" alt="">
+            <div class="handy-glanz" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div class="startseite-text">
+          <ol class="startpunkte" id="instinct-start-punkte"></ol>
+          <p class="startzeile" data-t="instinct.startZeile"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- Funktionsumfang ---------- -->
+    <section class="unter-block">
+      <h2 data-t="instinct.umfangTitel">Was drinsteckt</h2>
+      <p class="leise" style="max-width:64ch" data-t="instinct.umfangText"></p>
+      <div class="funktionen" id="instinct-umfang-liste"></div>
+      <h3 style="margin-top:clamp(1.8rem,3.4vw,2.6rem)"
+          data-t="instinct.umfangAnzeigenTitel"></h3>
+      <ul class="anzeigen" id="instinct-umfang-anzeigen"></ul>
+      <p class="preis" data-t="instinct.umfangFilter"></p>
+    </section>
+
+    <!-- ---------- Funktionsblöcke ---------- -->
+    <section class="unter-block">
+      <div id="instinct-bloecke"></div>
+    </section>
+
+    <!-- ---------- Bogenarten (auf dem Handy klappbar) ---------- -->
+    <section class="unter-block">
+      <h2 data-t="instinct.boegenTitel">Für welche Bögen?</h2>
+      <p class="leise" style="max-width:62ch" data-t="instinct.boegenText"></p>
+      <div class="boegen" id="instinct-boegen"></div>
+    </section>
+
+    <!-- ---------- Pfeil-Begriffe ---------- -->
+    <section class="unter-block">
+      <h2 data-t="instinct.pfeileTitel">Und was am Pfeil zählt</h2>
+      <p class="leise" style="max-width:62ch" data-t="instinct.pfeileText"></p>
+      <div class="begriffe zwei" id="instinct-pfeile"></div>
+    </section>
+
+    <!-- ---------- Spine-Rechner ---------- -->
+    <section class="unter-block">
+      <h2 data-t="instinct.spineTitel">Der Spine-Rechner</h2>
+      <div class="spine">
+        <div>
+          <h3 data-t="instinct.spineFrage">Was ist Spine überhaupt?</h3>
+          <p data-t="instinct.spineAntwort"></p>
+          <p data-t="instinct.spineWarum"></p>
+          <h3 style="margin-top:1.6rem" data-t="instinct.spineErgebnisTitel"></h3>
+          <p data-t="instinct.spineErgebnis"></p>
+          <p class="preis" data-t="instinct.spineHinweis"></p>
+        </div>
+        <div>
+          <h3 data-t="instinct.spineEingabeTitel">Das gibst du ein</h3>
+          <div class="spine-felder" id="instinct-spine-felder"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- Glossar ---------- -->
+    <section class="unter-block">
+      <h2 data-t="instinct.glossarTitel">Die Begriffe am Bogen</h2>
+      <p class="leise" style="max-width:64ch" data-t="instinct.glossarText"></p>
+      <div class="begriffe drei" id="instinct-glossar"></div>
+    </section>
+
+    <!-- ---------- Verbände ---------- -->
+    <section class="unter-block">
+      <h2 data-t="instinct.verbaendeTitel">Wer legt die Wertungen fest?</h2>
+      <div class="verbaende" id="instinct-verbaende"></div>
+    </section>
+
+    <!-- ---------- Parcours-Begriffe ---------- -->
+    <section class="unter-block">
+      <h2 data-t="instinct.parcoursTitel">Parcours, Pflock, Duell</h2>
+      <div class="begriffe drei" id="instinct-begriffe"></div>
+    </section>
+
+    <!-- ---------- Daten + Versprechen ---------- -->
+    <section class="unter-block">
+      <div class="karte">
+        <h2 style="font-size:clamp(1.3rem,2.6vw,1.8rem)"
+            data-t="instinct.datenTitel">Deine Daten gehören dir</h2>
+        <p data-t="instinct.datenText"></p>
+        <ul class="liste" id="instinct-daten"></ul>
+      </div>
+      <h3 style="margin-top:clamp(1.8rem,3.4vw,2.6rem)"
+          data-t="instinct.versprechenTitel">Gebaut für draußen</h3>
+      <div class="zahlen" id="instinct-versprechen"></div>
+    </section>
+
+    <!-- ---------- Preisstufen ---------- -->
+    <section class="unter-block">
+      <h2 data-t="instinct.stufenTitel">Drei Stufen</h2>
+      <p class="leise" style="max-width:60ch" data-t="instinct.stufenText"></p>
+      <div class="stufen" id="instinct-stufen"></div>
+      <div class="marken" id="instinct-zielgruppe" style="margin-top:1.8rem"></div>
+    </section>
+
+    <!-- ---------- Aktion ---------- -->
+    <section class="unter-block">
+      <div class="aktionen">
+        <a class="nbtn b-grass gross-knopf"
+           href="https://alonepard10501.github.io/instinct-scoring/"
+           target="_blank" rel="noopener">
+          <span data-t="aktion.browser">Im Browser testen</span></a>
+        <a class="nbtn b-scratch" href="index.html">
+          <span data-t="zurueckKnopf">← Zurück zur Startseite</span></a>
+      </div>
+      <p class="preis" data-t="instinct.preis"></p>
+    </section>
+
+  </div>
+</main>
+
+<footer class="fuss">
+  <div class="huelle">
+    <div class="fuss-unten">
+      <nav class="fuss-links" aria-label="Rechtliches">
+        <a href="index.html">Startseite</a>
+        <a href="https://alonepard10501.github.io/fanica/" rel="noopener">Entwicklerstudio ↗</a>
+        <a href="impressum.html" data-t="fuss.impressum">Impressum</a>
+        <a href="datenschutz.html" data-t="fuss.datenschutz">Datenschutz</a>
+        <a href="bildquellen.html" data-t="fuss.bildquellen">Bildquellen</a>
+      </nav>
+      <span>© <span id="jahr">2026</span> FaNiCa</span>
+    </div>
+  </div>
+</footer>
+
+<script src="texte.js"></script>
+<script src="inhalte.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

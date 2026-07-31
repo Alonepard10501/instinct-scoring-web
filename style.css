@@ -1,0 +1,2552 @@
+/* ============================================================
+   FaNiCa — Entwickler-Website
+   Dunkelmodus ist der einzige Modus. Reines CSS, kein Framework.
+   ============================================================ */
+
+:root {
+  /* --- Grundfarben (Intro / Abschluss) --- */
+  --schwarz:        #07070A;
+  --schwarz-tief:   #000000;
+  --anthrazit:      #14141A;
+  --creme:          #EDEBE3;
+  --grau:           #9AA0A6;
+  --grau-hell:      #C6CBD1;
+
+  /* --- FaNiCa-Rot --- */
+  --rot:            #E4192B;
+  --rot-hell:       #FF4257;
+  --rot-tief:       #7A0C16;
+
+  /* --- Instinct Scoring: Oliv / Waldnacht --- */
+  --oliv:           #7C8B3E;
+  --oliv-tief:      #6B7A3A;
+  --oliv-hell:      #A7BC55;
+  --waldgruen:      #3E4A2E;
+  --wald-anthrazit: #1A1C1A;
+  --wald-tief:      #0E100E;
+
+  /* --- NeonPunkt --- */
+  --neon-gruen:     #39FF14;
+  --neon-pink:      #FF10F0;
+  --neon-cyan:      #00FFFF;
+  --neon-gelb:      #FFFF00;
+
+  /* --- FaNiCa Fun: Neon-Zweitfarben --- */
+  --tuerkis:        #22D3EE;
+  --violett:        #A855F7;
+  --gelb:           #FACC15;
+
+  /* --- Aktive Kapitelfarbe: wird per JS umgeschaltet --- */
+  --akzent:         var(--rot);
+  --akzent-hell:    var(--rot-hell);
+  --grund:          var(--schwarz);
+
+  /* --- Maße --- */
+  --breite:         1180px;
+  --breite-schmal:  760px;
+  --rand:           clamp(20px, 5vw, 56px);
+  --radius:         16px;
+  --radius-gross:   26px;
+
+  /* --- Schrift: nur Systemschriften, nichts von fremden Servern --- */
+  --schrift-kopf:   "Saira", "Rajdhani", "Bahnschrift", "DIN Alternate",
+                    "Segoe UI Semibold", "Roboto Condensed", system-ui, sans-serif;
+  --schrift-text:   "Montserrat", "Segoe UI", system-ui, -apple-system,
+                    "Helvetica Neue", Arial, sans-serif;
+
+  /* --- Übergänge --- */
+  --weich:          cubic-bezier(.22,.61,.36,1);
+}
+
+/* ------------------------------------------------------------ Reset */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  /* Diese Größe ist die rem-Basis der ganzen Seite. Auf großen
+     Bildschirmen wird sie weiter unten hochgesetzt — dadurch wachsen
+     ALLE rem- und clamp()-Werte mit, nicht nur der Fließtext. */
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  background: var(--schwarz-tief);
+  color: var(--creme);
+  font-family: var(--schrift-text);
+  font-size: 1rem;          /* folgt der html-Basis */
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+a { color: var(--akzent-hell); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--creme); }
+
+/* Sichtbarer Fokus — Pflicht für Tastaturbedienung */
+:focus-visible {
+  outline: 3px solid var(--akzent-hell);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Sprung zum Inhalt */
+.sprunglink {
+  position: absolute; left: -9999px; top: 0; z-index: 999;
+  background: var(--creme); color: #000; padding: 14px 22px;
+  font-weight: 700; border-radius: 0 0 10px 0;
+}
+.sprunglink:focus { left: 0; }
+
+/* ------------------------------------------------- Grundbausteine */
+.huelle {
+  width: min(100% - var(--rand) * 2, var(--breite));
+  margin-inline: auto;
+}
+.huelle-schmal {
+  width: min(100% - var(--rand) * 2, var(--breite-schmal));
+  margin-inline: auto;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--schrift-kopf);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  margin: 0 0 .5em;
+  text-wrap: balance;
+}
+
+/* Die rem-Obergrenzen wachsen über die html-Basis mit (siehe unten,
+   große Bildschirme) — deshalb dürfen die Deckel großzügig sein. */
+h1 { font-size: clamp(2.6rem, 8.4vw, 6.4rem); }
+h2 { font-size: clamp(2rem, 5.2vw, 4.4rem); }
+h3 { font-size: clamp(1.3rem, 2.4vw, 2.1rem); }
+h4 { font-size: clamp(1.05rem, 1.6vw, 1.4rem); }
+
+p { margin: 0 0 1.1em; }
+p:last-child { margin-bottom: 0; }
+
+.gross     { font-size: clamp(1.1rem, 1.9vw, 1.6rem); line-height: 1.55; }
+.leise     { color: var(--grau); }
+.mittig    { text-align: center; }
+
+/* Augenbraue / Kapitelkennung */
+.kennung {
+  font-family: var(--schrift-kopf);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--akzent-hell);
+  margin: 0 0 1.1rem;
+  display: flex; align-items: center; gap: .8rem;
+}
+.kennung::after {
+  content: ""; flex: 1; height: 1px; max-width: 90px;
+  background: linear-gradient(90deg, var(--akzent), transparent);
+}
+.kennung.zentriert { justify-content: center; }
+.kennung.zentriert::after { display: none; }
+
+/* ------------------------------------------------------- Abschnitt */
+.abschnitt {
+  position: relative;
+  padding: clamp(90px, 13vh, 170px) 0;
+  isolation: isolate;
+}
+
+/* KAPITELFARBE FEST AM ABSCHNITT.
+   Vorher hing sie allein am Scroll-Skript — ohne JavaScript (oder solange
+   noch nicht gescrollt wurde) war das ganze Instinct-Kapitel rot statt oliv.
+   Jetzt trägt jeder Abschnitt seine Farbe selbst; das Skript färbt nur noch
+   Kopfzeile und Hintergrund weich mit. */
+[data-kapitel="instinct"] {
+  --akzent: var(--oliv);
+  --akzent-hell: var(--oliv-hell);
+}
+[data-kapitel="neonpunkt"] {
+  --akzent: var(--neon-gruen);
+  --akzent-hell: #7BFF5C;
+}
+[data-kapitel="fanica"],
+[data-kapitel="intro"],
+[data-kapitel="ueber"],
+[data-kapitel="schluss"] {
+  --akzent: var(--rot);
+  --akzent-hell: var(--rot-hell);
+}
+/* „Auf einen Blick" vergleicht ALLE DREI Apps — deshalb bekommt der
+   Abschnitt bewusst KEINE App-Farbe (rot gehörte FaNiCa Fun allein und
+   sah aus, als sei die Tabelle nur zu dieser einen App).
+   Falk 31.07.: „welche App ist für dich hat noch die falschen Farben".
+   Neutrales Silberweiß stellt die drei gleichberechtigt nebeneinander. */
+[data-kapitel="vergleich"] {
+  --akzent: #8E97A3;
+  --akzent-hell: #D7DDE4;
+}
+
+/* Der Hintergrund jedes Kapitels — weicher Wechsel, kein harter Schnitt */
+.kulisse {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: var(--schwarz-tief);
+  transition: background 1.1s var(--weich);
+}
+
+/* ============================================================
+   HOLOGRAFISCHER HINTERGRUND (Falk 30.07.)
+   Schlichtes Schwarz wirkte leer. Jetzt: schimmernde Lichtbrechung
+   wie auf einer Hologramm-Folie — vier Ebenen übereinander,
+   alle mit CSS erzeugt, kein einziges Bild.
+   ============================================================ */
+
+/* 1) Regenbogen-Schimmer: breite, sehr weiche Farbbänder, die langsam
+      wandern. mix-blend-mode legt sie wie Öl auf Wasser über den Grund. */
+.hologramm {
+  position: fixed; inset: -20%; z-index: -2; pointer-events: none;
+  opacity: .13;
+  mix-blend-mode: screen;
+  background:
+    conic-gradient(from 210deg at 22% 28%,
+      rgba(255,0,128,.55), rgba(0,229,255,.5)  16%,
+      rgba(140,255,80,.42) 33%, rgba(255,214,0,.5) 50%,
+      rgba(160,80,255,.55) 68%, rgba(0,255,200,.45) 84%,
+      rgba(255,0,128,.55)),
+    conic-gradient(from 20deg at 78% 72%,
+      rgba(0,180,255,.4), rgba(255,60,120,.42) 25%,
+      rgba(120,255,190,.35) 52%, rgba(190,120,255,.45) 76%,
+      rgba(0,180,255,.4));
+  filter: blur(min(150px, 19vw)) saturate(1.35);
+  animation: hologramm-drift 42s var(--weich) infinite alternate;
+  will-change: transform;
+}
+
+/* 2) Beugungsstreifen: schmale, schräge Regenbogenlinien wie auf einer
+      Hologramm-Karte, wenn man sie kippt. */
+.hologramm::before {
+  content: ""; position: absolute; inset: 0;
+  opacity: .28; mix-blend-mode: color-dodge;
+  background: repeating-linear-gradient(112deg,
+    transparent 0 22px,
+    rgba(255,0,140,.10) 22px 26px,
+    rgba(0,220,255,.11) 26px 30px,
+    rgba(150,255,120,.08) 30px 34px,
+    transparent 34px 58px);
+  animation: hologramm-streifen 26s linear infinite;
+}
+
+/* 3) Lichtreflex: ein breiter Schein, der schräg über die Fläche zieht —
+      das, was ein Hologramm im Licht macht. */
+.hologramm::after {
+  content: ""; position: absolute; inset: -30%;
+  background: linear-gradient(104deg,
+    transparent 38%,
+    rgba(255,255,255,.05) 47%,
+    rgba(255,255,255,.10) 50%,
+    rgba(255,255,255,.05) 53%,
+    transparent 62%);
+  animation: hologramm-reflex 19s var(--weich) infinite;
+}
+
+/* 4) Gitternetz: kaum sichtbar, gibt der Fläche Tiefe und Technik-Anmutung */
+.gitter {
+  position: fixed; inset: 0; z-index: -2; pointer-events: none;
+  opacity: .07;
+  background-image:
+    linear-gradient(rgba(255,255,255,.4) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.4) 1px, transparent 1px);
+  background-size: 72px 72px;
+  /* Nach außen ausblenden, damit es nicht wie Millimeterpapier wirkt */
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 35%, #000 12%, transparent 72%);
+          mask-image: radial-gradient(120% 90% at 50% 35%, #000 12%, transparent 72%);
+}
+
+@keyframes hologramm-drift {
+  0%   { transform: translate3d(-3%, -2%, 0) rotate(0deg)   scale(1.05); }
+  50%  { transform: translate3d( 2%,  3%, 0) rotate(4deg)   scale(1.16); }
+  100% { transform: translate3d( 4%, -3%, 0) rotate(-3deg)  scale(1.09); }
+}
+@keyframes hologramm-streifen {
+  from { background-position: 0 0; }
+  to   { background-position: 340px 140px; }
+}
+@keyframes hologramm-reflex {
+  0%, 100% { transform: translateX(-38%); opacity: 0; }
+  42%      { opacity: 1; }
+  58%      { opacity: 1; }
+  99%      { transform: translateX(38%);  opacity: 0; }
+}
+
+/* Feines Rauschen über allem — nimmt dem Schwarz die Flachheit */
+.koerner {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  opacity: .05; mix-blend-mode: overlay;
+  background-image:
+    repeating-conic-gradient(#fff 0% 25%, transparent 0% 50%);
+  background-size: 3px 3px;
+}
+
+/* ------------------------------------------- Licht-Ebenen je Kapitel */
+.licht {
+  position: absolute; inset: 0; z-index: -1;
+  pointer-events: none; overflow: hidden;
+}
+.licht span {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(min(90px, 14vw));
+  opacity: .5;
+  will-change: transform;
+}
+
+/* Intro: rotes Glühen, wandert langsam */
+.licht-intro span:nth-child(1) {
+  width: 62vw; height: 62vw; left: -14vw; top: -18vw;
+  background: radial-gradient(circle, rgba(228,25,43,.5), transparent 68%);
+  animation: wandern 26s var(--weich) infinite alternate;
+}
+.licht-intro span:nth-child(2) {
+  width: 44vw; height: 44vw; right: -10vw; bottom: -14vw;
+  background: radial-gradient(circle, rgba(122,12,22,.62), transparent 70%);
+  animation: wandern 34s var(--weich) infinite alternate-reverse;
+}
+
+/* Instinct: olivfarbenes Licht von unten, Nebelschichten */
+.licht-wald span:nth-child(1) {
+  width: 120vw; height: 55vw; left: -10vw; bottom: -26vw;
+  background: radial-gradient(ellipse, rgba(124,139,62,.46), transparent 66%);
+  animation: wandern 32s var(--weich) infinite alternate;
+}
+.licht-wald span:nth-child(2) {
+  width: 55vw; height: 55vw; right: -8vw; top: -12vw;
+  background: radial-gradient(circle, rgba(62,74,46,.6), transparent 70%);
+  animation: wandern 40s var(--weich) infinite alternate-reverse;
+}
+
+/* FaNiCa Fun: Lichtspuren laufen von rechts nach links */
+.licht-spuren span:nth-child(1) {
+  width: 70vw; height: 70vw; right: -20vw; top: -22vw;
+  background: radial-gradient(circle, rgba(228,25,43,.42), transparent 68%);
+  animation: wandern 28s var(--weich) infinite alternate;
+}
+.licht-spuren span:nth-child(2) {
+  width: 46vw; height: 46vw; left: -12vw; bottom: -16vw;
+  background: radial-gradient(circle, rgba(34,211,238,.24), transparent 70%);
+  animation: wandern 36s var(--weich) infinite alternate-reverse;
+}
+
+/* NeonPunkt: nur ein einziger Leuchtpunkt, Farbe wechselt */
+.licht-punkt span:nth-child(1) {
+  width: 52vw; height: 52vw; left: 50%; top: 46%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(57,255,20,.3), transparent 66%);
+  transition: background 1.4s var(--weich);
+  animation: atmen 9s ease-in-out infinite;
+}
+
+@keyframes wandern {
+  from { transform: translate3d(0,0,0) scale(1); }
+  to   { transform: translate3d(6vw, 5vh, 0) scale(1.16); }
+}
+@keyframes atmen {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: .46; }
+  50%      { transform: translate(-50%, -50%) scale(1.14); opacity: .62; }
+}
+
+/* Laufende Lichtspuren im FaNiCa-Kapitel (statt Rennbildern) */
+.spuren {
+  position: absolute; inset: 0; z-index: -1;
+  overflow: hidden; pointer-events: none; opacity: .5;
+}
+.spuren i {
+  position: absolute; height: 1px; left: -30%;
+  width: 30%;
+  background: linear-gradient(90deg, transparent, var(--spurfarbe, var(--rot)), transparent);
+  animation: spur linear infinite;
+}
+@keyframes spur {
+  from { transform: translateX(-40vw); opacity: 0; }
+  12%  { opacity: 1; }
+  88%  { opacity: 1; }
+  to   { transform: translateX(150vw); opacity: 0; }
+}
+
+/* ------------------------------------------------------------ Kopf */
+.kopf {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 90;
+  /* Der Balken selbst geht über die volle Breite (Hintergrund),
+     sein INHALT bleibt im Raster — sonst reißt die Zeile auf 4K
+     mit 3000 px zwischen Marke und Navigation auseinander. */
+  display: grid; justify-items: stretch;
+  padding: 14px var(--rand);
+  background: rgba(7,7,10,0);
+  backdrop-filter: blur(0px);
+  transition: background .5s var(--weich), backdrop-filter .5s var(--weich),
+              border-color .5s var(--weich);
+  border-bottom: 1px solid transparent;
+}
+.kopf-innen {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem;
+  width: 100%; max-width: var(--breite);
+  margin-inline: auto;
+}
+.kopf.fest {
+  background: rgba(7,7,10,.82);
+  backdrop-filter: blur(14px) saturate(1.3);
+  border-bottom-color: rgba(255,255,255,.09);
+}
+
+/* Lesefortschritt — dünner Strich unter der Kopfzeile, färbt sich je Kapitel */
+.fortschritt {
+  position: fixed; top: 0; left: 0; z-index: 95;
+  height: 3px; width: 100%;
+  transform: scaleX(var(--anteil, 0)); transform-origin: left;
+  /* Farbe kommt vom Skript (--kopf-akzent); ohne JS gilt der Rückfall. */
+  background: linear-gradient(90deg,
+    var(--kopf-akzent, var(--rot)),
+    var(--kopf-akzent-hell, var(--rot-hell)));
+  box-shadow: 0 0 14px -2px var(--kopf-akzent-hell, var(--rot-hell));
+  transition: transform .12s linear, background .6s var(--weich);
+  pointer-events: none;
+}
+.kopf-marke {
+  display: flex; align-items: center; gap: .65rem;
+  font-family: var(--schrift-kopf); font-weight: 800;
+  font-size: 1.02rem; letter-spacing: .04em;
+  color: var(--creme); text-decoration: none;
+}
+.kopf-marke img { width: 30px; height: 30px; object-fit: contain; }
+.kopf-marke b {
+  color: var(--kopf-akzent-hell, var(--rot-hell));
+  transition: color .5s var(--weich);
+}
+
+.kopf-nav { display: flex; align-items: center; gap: clamp(.5rem, 1.8vw, 1.7rem); }
+.kopf-nav a {
+  color: var(--grau-hell); text-decoration: none;
+  font-size: .9rem; font-weight: 600;
+  padding: 8px 4px; position: relative;
+  transition: color .3s;
+}
+.kopf-nav a::after {
+  content: ""; position: absolute; left: 4px; right: 4px; bottom: 2px;
+  height: 2px; background: var(--kopf-akzent, var(--rot)); border-radius: 2px;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .35s var(--weich);
+}
+.kopf-nav a:hover, .kopf-nav a:focus-visible { color: var(--creme); }
+.kopf-nav a:hover::after { transform: scaleX(1); }
+
+/* Auf dem Handy bleiben ALLE Punkte erreichbar — vorher waren sie
+   ausgeblendet und es gab keinen Ersatz. Jetzt nur kürzer und enger. */
+@media (max-width: 640px) {
+  .kopf { padding: 10px 14px; gap: .4rem; }
+  .kopf-nav { gap: .55rem; }
+  .kopf-nav a { font-size: .78rem; padding: 8px 2px; }
+  .kopf-marke span { font-size: .92rem; }
+  .kopf-marke img { width: 26px; height: 26px; }
+  .sprachknopf { padding: 5px 10px; font-size: .72rem; }
+}
+@media (max-width: 400px) {
+  /* Die Wortmarke bleibt lesbar — nur kleiner. Ganz ausblenden ließ
+     das Symbol allein stehen, damit war die Marke nicht mehr erkennbar. */
+  .kopf-marke span { font-size: .82rem; }
+  .kopf-marke img { width: 22px; height: 22px; }
+  .kopf-nav a { font-size: .72rem; }
+  .kopf-nav { gap: .42rem; }
+}
+/* 🔴 Diese Seite hat VIER Menüpunkte (die Entwickler-Website hat drei).
+   Auf dem Handy brachen sie zweizeilig um und schoben sich über die
+   Kooperationszeile darunter — auf 390 px war beides unlesbar.
+   Lösung: Unter 700 px fallen die zwei reinen Sprungmarken weg
+   („Die App" und „Preise" sind ohnehin nur ein Scroll entfernt).
+   Es bleiben die zwei Ziele, die man NICHT durch Scrollen erreicht:
+   die Detailseite und das Entwicklerstudio. */
+@media (max-width: 700px) {
+  .kopf-nav a[href="#app"],
+  .kopf-nav a[href="#stufen"] { display: none; }
+}
+
+/* Unter ~345px passen drei Menüwörter nicht mehr nebeneinander —
+   sie brachen zweizeilig um und kippten die ganze Zeile schief.
+   Deshalb hier: nicht umbrechen lassen, dafür enger und kleiner. */
+@media (max-width: 360px) {
+  .kopf { padding: 8px 10px; }
+  .kopf-innen { gap: .5rem; }
+  .kopf-nav { gap: .34rem; flex-wrap: nowrap; }
+  .kopf-nav a {
+    font-size: .68rem; padding: 6px 1px;
+    white-space: nowrap;
+  }
+  .kopf-marke span { font-size: .76rem; }
+  .kopf-marke img { width: 20px; height: 20px; }
+  .sprachknopf { padding: 4px 8px; font-size: .66rem; letter-spacing: .05em; }
+}
+
+.sprachknopf {
+  background: transparent; color: var(--creme);
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 999px; padding: 6px 14px;
+  font-family: var(--schrift-kopf); font-weight: 700; font-size: .8rem;
+  letter-spacing: .1em; cursor: pointer;
+  transition: border-color .3s, background .3s, color .3s;
+}
+.sprachknopf:hover {
+  border-color: var(--kopf-akzent, var(--rot));
+  background: rgba(255,255,255,.06);
+}
+
+/* ------------------------------------------------------------ Hero */
+.hero {
+  min-height: 100svh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 120px var(--rand) 60px;
+  position: relative;
+}
+.hero-logo {
+  /* Deckel grosszuegiger: bei 4K blieb das Logo sonst bei 330px stehen,
+     waehrend Schrift und Raster mitwuchsen. */
+  width: clamp(180px, 27vw, 460px);
+  margin: 0 auto clamp(1.4rem, 4vw, 2.6rem);
+  filter: drop-shadow(0 18px 50px rgba(228,25,43,.32));
+  animation: auftauchen 1.1s var(--weich) both;
+}
+.hero h1 { margin-bottom: .28em; }
+.hero h1 span { display: block; }
+.hero h1 .zwei {
+  background: linear-gradient(100deg, var(--rot-hell) 10%, var(--creme) 62%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+.hero p.gross { max-width: 56ch; margin-inline: auto; color: var(--grau-hell); }
+
+/* Ohne Titelzeile trägt dieser Satz den Hero allein — größer, heller,
+   mittig. (Falk 30.07.) */
+h1.hero-text,
+.hero-text {
+  /* Falk 30.07.: Schriftgröße wie vor dem Umbau (.gross) — nur zentriert.
+     Das Element ist die H1 der Seite (Suchmaschinen/Screenreader brauchen
+     genau eine), soll aber NICHT wie eine Überschrift aussehen. */
+  font-size: clamp(1.1rem, 1.9vw, 1.6rem);
+  line-height: 1.55;
+  font-family: var(--schrift-text);
+  font-weight: 400;
+  color: var(--grau-hell) !important;
+  max-width: 56ch !important;
+  margin: clamp(.8rem, 2.4vw, 1.6rem) auto 0;
+  text-align: center;
+  text-wrap: balance;
+}
+.hero-text::after {           /* feiner Strich als Abschluss */
+  content: ""; display: block;
+  width: clamp(60px, 8vw, 110px); height: 3px;
+  margin: clamp(1.4rem, 3vw, 2.2rem) auto 0;
+  border-radius: 3px;
+  background: linear-gradient(90deg, transparent, var(--akzent), transparent);
+}
+
+.hero-knoepfe {
+  display: flex; flex-wrap: wrap; gap: .9rem;
+  justify-content: center; margin-top: 2.4rem;
+}
+
+/* Marken-Punkte am unteren Rand */
+.markenpunkte {
+  display: flex; gap: clamp(1rem, 4vw, 2.6rem);
+  justify-content: center;
+  /* Abstand nach unten hält den Scroll-Hinweis frei — er sitzt absolut
+     am unteren Rand und darf die Marken-Punkte nicht überlagern. */
+  margin-top: clamp(2.4rem, 6vh, 4rem);
+  margin-bottom: clamp(3.4rem, 7vh, 5rem);
+  flex-wrap: wrap;
+}
+.markenpunkt {
+  display: flex; flex-direction: column; align-items: center; gap: .7rem;
+  background: none; border: 0; cursor: pointer;
+  color: var(--grau); font-family: var(--schrift-text);
+  font-size: .8rem; font-weight: 600; letter-spacing: .04em;
+  padding: 8px 10px; border-radius: 12px;
+  transition: color .3s, transform .3s var(--weich);
+}
+.markenpunkt i {
+  width: 15px; height: 15px; border-radius: 50%;
+  background: var(--pf); display: block;
+  box-shadow: 0 0 0 0 var(--pf);
+  transition: box-shadow .45s var(--weich), transform .35s var(--weich);
+}
+.markenpunkt:hover { color: var(--creme); transform: translateY(-4px); }
+.markenpunkt:hover i { box-shadow: 0 0 26px 3px var(--pf); transform: scale(1.25); }
+
+.scrollhinweis {
+  position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%);
+  font-size: .68rem; letter-spacing: .28em; text-transform: uppercase;
+  color: var(--grau); display: flex; flex-direction: column;
+  align-items: center; gap: .55rem;
+}
+.scrollhinweis::after {
+  content: ""; width: 1px; height: 34px;
+  background: linear-gradient(180deg, var(--grau), transparent);
+  animation: rutschen 2.4s ease-in-out infinite;
+}
+@keyframes rutschen {
+  0%, 100% { opacity: .25; transform: scaleY(.55); transform-origin: top; }
+  50%      { opacity: 1;   transform: scaleY(1);   transform-origin: top; }
+}
+
+@keyframes auftauchen {
+  from { opacity: 0; transform: translateY(26px) scale(.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---------------------------------------------------------- Knöpfe */
+.knopf {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: .6rem;
+  padding: 15px 30px;
+  font-family: var(--schrift-kopf); font-weight: 700;
+  font-size: .96rem; letter-spacing: .045em;
+  border-radius: 999px; border: 1px solid transparent;
+  text-decoration: none; cursor: pointer;
+  transition: transform .28s var(--weich), box-shadow .28s var(--weich),
+              background .28s, border-color .28s, color .28s;
+}
+.knopf-voll {
+  background: var(--akzent); color: #0A0A0C;
+  box-shadow: 0 10px 34px -12px var(--akzent);
+}
+.knopf-voll:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 44px -12px var(--akzent);
+  color: #0A0A0C;
+}
+.knopf-rand {
+  background: rgba(255,255,255,.03); color: var(--creme);
+  border-color: rgba(255,255,255,.26);
+}
+.knopf-rand:hover {
+  transform: translateY(-3px);
+  border-color: var(--akzent); background: rgba(255,255,255,.08);
+  color: var(--creme);
+}
+.knopf-aus,
+.knopf[aria-disabled="true"] {
+  opacity: .42; cursor: not-allowed; pointer-events: none;
+  filter: grayscale(1);
+}
+
+/* ------------------------------------------------------ Store-Reihe */
+.aktionen {
+  display: flex; flex-wrap: wrap; gap: .85rem;
+  align-items: center; margin-top: 2rem;
+}
+
+/* Offizielle Store-Badges — Originalmaße, unverändert */
+.badge {
+  display: inline-flex; align-items: center; gap: .7rem;
+  height: 54px; padding: 0 20px 0 17px;
+  border-radius: 10px; text-decoration: none;
+  background: #000; border: 1px solid rgba(255,255,255,.3);
+  color: #fff; transition: transform .28s var(--weich), border-color .28s;
+}
+.badge:hover { transform: translateY(-3px); border-color: rgba(255,255,255,.6); color: #fff; }
+.badge svg { width: 26px; height: 26px; flex: none; }
+.badge-text { display: flex; flex-direction: column; line-height: 1.16; }
+.badge-text small {
+  font-size: .58rem; letter-spacing: .07em; text-transform: uppercase;
+  opacity: .8;
+}
+.badge-text strong {
+  font-family: var(--schrift-kopf); font-size: 1.02rem;
+  font-weight: 700; letter-spacing: .01em;
+}
+.badge[aria-disabled="true"] {
+  opacity: .4; pointer-events: none; filter: grayscale(1);
+}
+
+/* QR-Code */
+.qr {
+  display: flex; align-items: center; gap: 1.1rem;
+  margin-top: 2rem; padding: 1.1rem 1.3rem;
+  border: 1px solid rgba(255,255,255,.12); border-radius: var(--radius);
+  background: rgba(255,255,255,.028); max-width: 420px;
+}
+.qr svg {
+  width: 92px; height: 92px; flex: none;
+  border-radius: 8px; background: #fff; padding: 6px;
+}
+.qr-text h4 { margin-bottom: .25em; font-size: 1rem; }
+.qr-text p { font-size: .84rem; color: var(--grau); margin: 0; }
+
+/* ------------------------------------------------- Kapitel-Titelkopf */
+.kapitelkopf {
+  display: flex; flex-direction: column; align-items: flex-start;
+  gap: .4rem; margin-bottom: clamp(2.6rem, 6vw, 4.4rem);
+}
+.kapitelkopf.mitte { align-items: center; text-align: center; }
+
+.kooperationszeile {
+  font-size: .84rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--grau); font-weight: 600; margin: .2rem 0 0;
+}
+
+.kapitel-logo {
+  width: clamp(120px, 17vw, 190px);
+  margin-bottom: 1.4rem;
+  filter: drop-shadow(0 12px 34px rgba(124,139,62,.34));
+}
+
+/* Claim TRACK. SCORE. IMPROVE. */
+.claim {
+  display: flex; flex-wrap: wrap; gap: clamp(.7rem, 2.4vw, 1.9rem);
+  font-family: var(--schrift-kopf); font-weight: 800;
+  font-size: clamp(1.7rem, 5.4vw, 3.6rem);
+  letter-spacing: -.01em; margin: .4rem 0 1rem;
+}
+.claim span:nth-child(1) { color: var(--oliv-hell); }
+.claim span:nth-child(2) { color: var(--creme); }
+.claim span:nth-child(3) { color: var(--oliv); }
+
+.zitat {
+  border-left: 3px solid var(--akzent);
+  padding: .3rem 0 .3rem 1.4rem;
+  margin: 2.2rem 0;
+  font-family: var(--schrift-kopf); font-weight: 600;
+  font-size: clamp(1.15rem, 2.5vw, 1.72rem);
+  line-height: 1.35; color: var(--creme);
+  font-style: normal;
+}
+
+/* ------------------------------------------------------ Raster/Karten */
+.raster {
+  display: grid; gap: clamp(1.1rem, 2.6vw, 1.9rem);
+}
+.raster-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.raster-3 { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+.raster-4 { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+
+.karte {
+  position: relative; isolation: isolate;
+  background: rgba(255,255,255,.032);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--radius-gross);
+  padding: clamp(1.4rem, 3vw, 2.1rem);
+  overflow: hidden;
+  transition: border-color .4s var(--weich), background .4s var(--weich),
+              transform .4s var(--weich), box-shadow .4s var(--weich);
+}
+/* Lichtschein, der dem Zeiger folgt (Position kommt aus app.js) */
+.karte::before {
+  content: ""; position: absolute; inset: -1px; z-index: -1;
+  border-radius: inherit; pointer-events: none;
+  opacity: 0; transition: opacity .45s var(--weich);
+  background: radial-gradient(
+    240px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--akzent) 26%, transparent), transparent 62%);
+}
+.karte:hover::before { opacity: 1; }
+.karte:hover {
+  border-color: color-mix(in srgb, var(--akzent) 55%, transparent);
+  background: rgba(255,255,255,.052);
+  transform: translateY(-4px);
+  box-shadow: 0 22px 50px -28px color-mix(in srgb, var(--akzent) 70%, transparent);
+}
+.karte h3, .karte h4 { color: var(--creme); }
+.karte p { color: var(--grau-hell); }
+
+.karten-nr {
+  font-family: var(--schrift-kopf); font-weight: 800;
+  font-size: .8rem; letter-spacing: .2em;
+  color: var(--akzent-hell); margin-bottom: .9rem; display: block;
+}
+
+/* Funktionsblock: Text + Screenshot nebeneinander */
+.block {
+  display: grid; align-items: center;
+  gap: clamp(1.8rem, 5vw, 4.4rem);
+  grid-template-columns: 1fr;
+  margin-bottom: clamp(3.4rem, 8vw, 6.5rem);
+}
+@media (min-width: 900px) {
+  .block { grid-template-columns: 1.05fr .95fr; }
+  .block.gedreht .block-text { order: 2; }
+  .block.gedreht .block-bild { order: 1; }
+}
+.block:last-child { margin-bottom: 0; }
+
+/* Blöcke ohne Screenshot: Text zweispaltig setzen, damit sie nicht als
+   schmale Säule mit viel Leerraum daneben stehen. */
+.block-ohne-bild { grid-template-columns: 1fr !important; }
+.block-ohne-bild .block-text {
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--radius-gross);
+  background: rgba(255,255,255,.024);
+  padding: clamp(1.5rem, 3.2vw, 2.4rem);
+}
+@media (min-width: 900px) {
+  .block-ohne-bild .block-text {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0 clamp(1.6rem, 3.4vw, 3rem);
+    align-items: start;
+    /* Kennung, Titel, Text stehen dicht untereinander in Spalte 1;
+       die Aufzaehlung fuellt Spalte 2 ueber die volle Hoehe. */
+    grid-template-rows: auto auto 1fr;
+  }
+  .block-ohne-bild .karten-nr { grid-column: 1; grid-row: 1; margin-bottom: .6rem; }
+  .block-ohne-bild h3         { grid-column: 1; grid-row: 2; margin-bottom: .5em; }
+  .block-ohne-bild > .block-text > p {
+    grid-column: 1; grid-row: 3; margin: 0; align-self: start;
+  }
+  .block-ohne-bild .liste { grid-column: 2; grid-row: 1 / -1; margin-top: 0; }
+}
+
+
+.block-text h3 { margin-bottom: .55em; }
+.block-text > p { color: var(--grau-hell); }
+
+/* Aufzählung mit Haken statt Punkten */
+.liste { list-style: none; padding: 0; margin: 1.5rem 0 0; }
+.liste li {
+  position: relative; padding-left: 1.9rem; margin-bottom: .72rem;
+  color: var(--grau-hell); font-size: .95rem; line-height: 1.55;
+}
+.liste li::before {
+  content: ""; position: absolute; left: 0; top: .52em;
+  width: 9px; height: 9px; border-radius: 2px;
+  background: var(--akzent);
+  box-shadow: 0 0 12px -1px var(--akzent);
+}
+
+/* Handy-Rahmen um Screenshots — auf großen Schirmen deutlich größer,
+   damit die 4K-Screenshots ihre Schärfe auch zeigen dürfen. */
+.handy {
+  position: relative; margin-inline: auto;
+  max-width: 300px; width: 100%;
+  border-radius: 34px; padding: 10px;
+  background: linear-gradient(160deg, #2A2A32, #101014 62%);
+  box-shadow:
+    0 34px 70px -26px rgba(0,0,0,.92),
+    0 0 0 1px rgba(255,255,255,.08) inset;
+  /* 3D-Bühne für die Maus-Neigung */
+  transform-style: preserve-3d;
+  transition: transform .5s var(--weich), box-shadow .5s var(--weich);
+  will-change: transform;
+}
+@media (min-width: 1600px) { .handy { max-width: 340px; } }
+@media (min-width: 2200px) { .handy { max-width: 400px; border-radius: 42px; padding: 12px; } }
+@media (min-width: 3000px) { .handy { max-width: 480px; border-radius: 50px; padding: 14px; } }
+
+/* Reflex, der beim Neigen über das Glas wandert */
+.handy::after {
+  content: ""; position: absolute; inset: 10px;
+  border-radius: 26px; pointer-events: none; z-index: 3;
+  background: linear-gradient(
+    var(--glanzwinkel, 155deg),
+    rgba(255,255,255,.20) 0%,
+    rgba(255,255,255,.05) 26%,
+    transparent 52%);
+  opacity: var(--glanzstaerke, .55);
+  transition: opacity .5s var(--weich);
+}
+.handy:hover {
+  box-shadow:
+    0 44px 90px -26px rgba(0,0,0,.95),
+    0 0 0 1px rgba(255,255,255,.16) inset,
+    0 0 60px -18px color-mix(in srgb, var(--akzent) 55%, transparent);
+}
+.handy::before {
+  content: ""; position: absolute; top: 20px; left: 50%;
+  transform: translateX(-50%);
+  width: 76px; height: 5px; border-radius: 4px;
+  background: rgba(255,255,255,.16); z-index: 2;
+}
+.handy img {
+  border-radius: 26px; width: 100%; display: block;
+  background: #000;
+}
+.handy-glanz {
+  position: absolute; inset: 10px; border-radius: 26px;
+  pointer-events: none;
+  background: linear-gradient(155deg, rgba(255,255,255,.13), transparent 42%);
+}
+
+/* Screenshot-Galerie (NeonPunkt) */
+.galerie {
+  display: grid; gap: clamp(.9rem, 2vw, 1.5rem);
+  /* FESTE Spaltenzahl statt auto-fit: bei drei Bildern brach auto-fit
+     auf dem Handy in 2+1 um und liess ab 2400px eine leere vierte
+     Spalte stehen. */
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 2.6rem;
+}
+@media (max-width: 560px) {
+  /* Auf dem Handy untereinander statt drei winzige Spalten */
+  .galerie { grid-template-columns: 1fr 1fr; }
+}
+.galerie figure { margin: 0; }
+.galerie img {
+  width: 100%; border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.11);
+  background: #000;
+  /* ECHTES Seitenverhältnis der zugeschnittenen Screenshots (680x1209).
+     Kein "cover" — das schnitt vorher die Kopfzeile mit den Klicks ab.
+     Und kein fremdes Verhältnis: sonst entstehen schwarze Letterbox-Balken. */
+  aspect-ratio: 680 / 1209;
+  object-fit: contain;
+  transition: transform .4s var(--weich), border-color .4s;
+}
+.galerie figure:hover img {
+  transform: translateY(-5px) scale(1.02);
+  border-color: color-mix(in srgb, var(--akzent) 60%, transparent);
+}
+.galerie figcaption {
+  margin-top: .6rem; font-size: .78rem; color: var(--grau);
+  text-align: center; letter-spacing: .05em;
+}
+
+/* ------------------------------------------------- Große Zahlen */
+.zahlen {
+  display: grid; gap: clamp(1rem, 2.4vw, 1.8rem);
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  margin: clamp(2.4rem, 5vw, 3.6rem) 0 0;
+}
+.zahl {
+  text-align: center; padding: clamp(1.3rem, 3vw, 2rem) 1rem;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--radius-gross);
+  background: rgba(255,255,255,.028);
+}
+.zahl b {
+  display: block; font-family: var(--schrift-kopf);
+  font-size: clamp(2.6rem, 7vw, 4.4rem); font-weight: 800;
+  line-height: 1; color: var(--akzent-hell);
+  letter-spacing: -.02em;
+}
+.zahl em {
+  display: block; font-style: normal; font-size: .82rem;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--grau); margin-top: .5rem;
+}
+.zahl span { display: block; margin-top: .7rem; font-size: .9rem; color: var(--grau-hell); }
+
+/* Punkte-Regeln FaNiCa */
+.regeln { display: flex; flex-wrap: wrap; gap: 1.1rem; margin-top: 1.8rem; }
+.regel {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1rem 1.5rem 1rem 1.1rem;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,.03);
+  flex: 1 1 260px;
+}
+.regel b {
+  font-family: var(--schrift-kopf); font-size: 2rem; font-weight: 800;
+  color: var(--akzent-hell); line-height: 1; flex: none;
+}
+.regel span { font-size: .92rem; color: var(--grau-hell); }
+
+/* Zielgruppen-Marken */
+.marken { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.8rem; }
+.marken span {
+  padding: 7px 15px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.16);
+  font-size: .82rem; color: var(--grau-hell);
+  letter-spacing: .04em;
+}
+
+/* Preiszeile */
+.preis {
+  margin-top: 1.6rem; font-size: .87rem; color: var(--grau);
+  padding-left: 1rem; border-left: 2px solid rgba(255,255,255,.14);
+}
+
+/* Hinweis-Kasten */
+.hinweis {
+  margin-top: 2.2rem; padding: 1.1rem 1.4rem;
+  border: 1px solid rgba(255,255,255,.11);
+  border-left: 3px solid var(--akzent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: rgba(255,255,255,.026);
+  font-size: .86rem; color: var(--grau);
+}
+.hinweis p { margin-bottom: .5em; }
+.hinweis p:last-child { margin-bottom: 0; }
+
+/* --------------------------------------------------- Morph-Bereich */
+.morph {
+  margin: clamp(2.6rem, 6vw, 4.4rem) 0;
+  /* Oben/unten mehr Luft: beim Abspielen fahren die Ebenen +-118 Einheiten
+     auseinander und ragten sonst kurz ueber die Kastenkante. */
+  padding: clamp(2.2rem, 5vw, 3.6rem) clamp(1.5rem, 4vw, 2.8rem);
+  border: 1px solid rgba(255,255,255,.11);
+  border-radius: var(--radius-gross);
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(124,139,62,.13), transparent 62%),
+    rgba(255,255,255,.022);
+}
+.morph-kopf {
+  display: flex; flex-wrap: wrap; align-items: center;
+  justify-content: space-between; gap: 1.2rem; margin-bottom: 1.6rem;
+}
+.morph-kopf h3 { margin: 0 0 .3em; }
+.morph-kopf p { margin: 0; font-size: .9rem; color: var(--grau); }
+
+/* Ab Tablet stehen Erklärung und Bühne nebeneinander —
+   sonst bleibt neben der schmalen Zeichnung zu viel Fläche leer. */
+@media (min-width: 900px) {
+  .morph-innen {
+    display: grid;
+    grid-template-columns: minmax(240px, 380px) minmax(320px, 1fr);
+    gap: clamp(1.2rem, 2.4vw, 2.4rem);
+    align-items: center;
+    justify-items: start;
+  }
+  .morph-kopf {
+    flex-direction: column; align-items: flex-start;
+    justify-content: center; margin-bottom: 0;
+  }
+  /* Text auf lesbares Maß begrenzen, sonst laufen die Zeilen auf
+     breiten Schirmen quer durch den halben Kasten. */
+  .morph-kopf > div { max-width: 46ch; }
+}
+
+/* Auf sehr breiten Schirmen wächst die Zeichnung mit, statt dass
+   rechts neben ihr eine leere Fläche stehen bleibt. */
+@media (min-width: 2000px) {
+  .morph { padding: clamp(3rem, 3.6vw, 4.4rem) clamp(2.4rem, 3vw, 3.6rem); }
+  .morph-innen { grid-template-columns: minmax(300px, 460px) minmax(560px, 1fr); }
+}
+
+.morph-buehne {
+  position: relative;
+  width: 100%; max-width: 100%; margin-inline: auto;
+  aspect-ratio: 330 / 336;   /* wie die viewBox — keine Leerränder */
+}
+.morph-buehne svg { width: 100%; height: 100%; overflow: visible; }
+
+.morph-ebene { transition: transform 1.15s var(--weich), opacity .6s var(--weich); }
+
+/* Die Beschriftungen sind IMMER da — sie erklären die Schichten auch im
+   Ruhezustand und füllen die Bühne. Beim Abspielen werden sie kräftiger.
+   (Vorher unsichtbar bis zum Klick — dadurch stand die Zeichnung als
+   schmaler Streifen in einer großen leeren Fläche.) */
+.morph-marke {
+  opacity: .55;
+  /* Auf kleinen Schirmen skaliert das SVG stark herunter — dort größer
+     setzen, sonst landet die Beschriftung bei ~9px und ist unlesbar. */
+  transition: opacity .5s var(--weich) .35s;
+  font-family: var(--schrift-text);
+  font-size: 11.5px; fill: var(--creme);
+  letter-spacing: .02em;
+}
+.morph.offen .morph-marke { opacity: 1; }
+.morph-markelinie {
+  stroke: rgba(237,235,227,.4); stroke-width: .8;
+  opacity: .4; transition: opacity .5s var(--weich) .35s;
+}
+.morph.offen .morph-markelinie { opacity: 1; }
+
+/* Beschriftungen der Explosionszeichnung auf schmalen Schirmen vergrößern
+   (das SVG skaliert dort stark herunter). */
+@media (max-width: 900px) {
+  .morph-marke { font-size: 15px; }
+}
+@media (max-width: 560px) {
+  .morph-marke { font-size: 19px; }
+  .morph-markelinie { stroke-width: 1.4; }
+}
+
+
+/* ------------------------------------------- NeonPunkt: echtes Spiel */
+.spielfeld {
+  position: relative;
+  margin: clamp(2rem, 5vw, 3.2rem) auto 0;
+  width: 100%; max-width: 560px;
+  aspect-ratio: 4 / 3;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: var(--radius-gross);
+  background:
+    radial-gradient(90% 70% at 50% 50%, rgba(255,255,255,.035), transparent 70%),
+    #000;
+  overflow: hidden;
+  display: grid; place-items: center;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.spielpunkt {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--neon-gruen);
+  box-shadow: 0 0 44px 10px color-mix(in srgb, var(--neon-gruen) 62%, transparent);
+  transition: width .5s var(--weich), height .5s var(--weich),
+              background .45s var(--weich), box-shadow .45s var(--weich);
+  will-change: width, height;
+}
+.spielfeld:hover .spielpunkt { filter: brightness(1.14); }
+.spielzaehler {
+  position: absolute; top: 14px; left: 0; right: 0;
+  display: flex; justify-content: center; gap: clamp(1rem, 4vw, 2.4rem);
+  font-family: var(--schrift-kopf); font-size: .82rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--grau);
+  pointer-events: none;
+}
+.spielzaehler b { color: var(--creme); font-weight: 700; }
+.spielhinweis {
+  position: absolute; bottom: 14px; left: 0; right: 0;
+  text-align: center; font-size: .76rem; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--grau);
+  pointer-events: none;
+  transition: opacity .5s;
+}
+.spielfeld.beruehrt .spielhinweis { opacity: 0; }
+
+/* ------------------------------------------------------ Über mich */
+.portraet {
+  width: min(320px, 74vw); margin-inline: auto;
+  filter: drop-shadow(0 20px 54px rgba(228,25,43,.28));
+}
+
+.ablauf {
+  display: grid; gap: 1px;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--radius-gross); overflow: hidden;
+  margin-top: clamp(2.4rem, 5vw, 3.6rem);
+}
+@media (min-width: 860px) { .ablauf { grid-template-columns: repeat(5, 1fr); } }
+.ablauf-schritt {
+  background: #0B0B0F; padding: clamp(1.3rem, 2.6vw, 1.8rem);
+  transition: background .4s var(--weich);
+}
+.ablauf-schritt:hover { background: #101017; }
+.ablauf-schritt b {
+  display: block; font-family: var(--schrift-kopf);
+  font-size: .78rem; letter-spacing: .2em; color: var(--akzent-hell);
+  margin-bottom: .8rem;
+}
+.ablauf-schritt h4 { margin-bottom: .4em; font-size: 1.05rem; }
+.ablauf-schritt p { font-size: .86rem; color: var(--grau); margin: 0; }
+
+/* -------------------------------------------------------- Kontakt */
+.kontakt { text-align: center; }
+.kontakt .knopf { margin-top: 1.6rem; font-size: 1.02rem; padding: 17px 34px; }
+
+/* ------------------------------------------------------------ Fuß */
+.fuss {
+  border-top: 1px solid rgba(255,255,255,.1);
+  padding: clamp(2.6rem, 6vw, 4rem) 0 2.4rem;
+  background: rgba(0,0,0,.55);
+}
+.fuss-oben {
+  display: flex; flex-wrap: wrap; gap: 1.6rem;
+  justify-content: space-between; align-items: flex-start;
+  margin-bottom: 2.2rem;
+}
+.fuss-marke { display: flex; align-items: center; gap: .8rem; }
+.fuss-marke img { width: 42px; height: 42px; object-fit: contain; }
+.fuss-marke b { font-family: var(--schrift-kopf); font-size: 1.1rem; letter-spacing: .04em; }
+.fuss-links { display: flex; flex-wrap: wrap; gap: 1.4rem; }
+.fuss-links a {
+  color: var(--grau-hell); text-decoration: none; font-size: .88rem;
+  transition: color .3s;
+}
+.fuss-links a:hover { color: var(--creme); text-decoration: underline; }
+.fuss-unten {
+  display: flex; flex-wrap: wrap; gap: .8rem 1.6rem;
+  justify-content: space-between; align-items: center;
+  padding-top: 1.6rem; border-top: 1px solid rgba(255,255,255,.07);
+  font-size: .8rem; color: var(--grau);
+}
+
+/* ------------------------------------------- Rechtsseiten (Unterseiten) */
+.rechtsseite {
+  padding: 140px var(--rand) 90px;
+  max-width: var(--breite-schmal); margin-inline: auto;
+}
+.rechtsseite h1 { font-size: clamp(2.1rem, 5.4vw, 3.4rem); margin-bottom: .2em; }
+.rechtsseite h2 {
+  font-size: clamp(1.2rem, 2.6vw, 1.6rem);
+  margin-top: 2.6rem; margin-bottom: .6em;
+  color: var(--creme);
+}
+.rechtsseite p, .rechtsseite li { color: var(--grau-hell); }
+.rechtsseite .untertitel {
+  color: var(--grau); font-size: 1.05rem; margin-bottom: 2.4rem;
+}
+.rechtsseite address {
+  font-style: normal; padding: 1.2rem 1.4rem;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: var(--radius); background: rgba(255,255,255,.03);
+  white-space: pre-line; line-height: 1.7;
+}
+.platzhalter {
+  color: var(--rot-hell); font-weight: 600;
+  background: rgba(228,25,43,.1); padding: 1px 6px; border-radius: 4px;
+}
+
+.tabelle { width: 100%; border-collapse: collapse; margin-top: 1.4rem; font-size: .86rem; }
+.tabelle-huelle { overflow-x: auto; }
+.tabelle th, .tabelle td {
+  text-align: left; padding: .78rem .9rem;
+  border-bottom: 1px solid rgba(255,255,255,.09);
+  vertical-align: top;
+}
+.tabelle th {
+  font-family: var(--schrift-kopf); font-size: .74rem;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--akzent-hell);
+  white-space: nowrap;
+}
+.tabelle td { color: var(--grau-hell); }
+.tabelle td:first-child {
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: .8rem; color: var(--creme); white-space: nowrap;
+}
+
+/* ---------------------------------------------- Einblenden beim Scrollen */
+.auf {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity .85s var(--weich), transform .85s var(--weich);
+}
+.auf.da { opacity: 1; transform: none; }
+.auf.v2 { transition-delay: .1s; }
+.auf.v3 { transition-delay: .2s; }
+.auf.v4 { transition-delay: .3s; }
+
+/* ============================================================
+   ERKLÄRTEILE — Bögen, Begriffe, Trophäen, Zielscheibe
+   ============================================================ */
+
+/* ---- Bogenarten: Grafik oben, Erklärung darunter ---- */
+.boegen {
+  display: grid; gap: clamp(1rem, 2.4vw, 1.7rem);
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+.bogen {
+  position: relative; overflow: hidden;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--radius-gross);
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(124,139,62,.16), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.012));
+  transition: border-color .45s var(--weich), transform .45s var(--weich),
+              box-shadow .45s var(--weich);
+}
+.bogen:hover {
+  border-color: color-mix(in srgb, var(--bf, var(--akzent)) 60%, transparent);
+  transform: translateY(-5px);
+  box-shadow: 0 26px 60px -30px var(--bf, var(--akzent));
+}
+/* Bühne für die gezeichnete Bogen-Silhouette.
+   HOCHKANT (4:5) — die Bögen sind hochformatige Zeichnungen (viewBox 120x200);
+   eine querformatige Bühne schnitt sie vorher unten ab. */
+.bogen-buehne {
+  position: relative; aspect-ratio: 4 / 5;
+  display: grid; place-items: center;
+  background:
+    radial-gradient(70% 90% at 50% 100%, color-mix(in srgb, var(--bf) 22%, transparent), transparent 68%),
+    repeating-linear-gradient(115deg, rgba(255,255,255,.028) 0 2px, transparent 2px 9px),
+    #0C0F0B;
+  border-bottom: 1px solid rgba(255,255,255,.09);
+  overflow: hidden;
+}
+/* Höhe führt, Breite folgt dem Seitenverhältnis der Zeichnung —
+   so bleibt der Bogen immer ganz im Bild. */
+.bogen-buehne svg {
+  width: auto; height: 82%; max-width: 80%;
+  overflow: visible;
+}
+.bogen-buehne::after {          /* weicher Lichtkegel von unten */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(58% 46% at 50% 108%,
+    color-mix(in srgb, var(--bf) 34%, transparent), transparent 70%);
+  opacity: .85;
+}
+.bogen-kopf {
+  padding: clamp(1.1rem, 2.4vw, 1.5rem) clamp(1.1rem, 2.4vw, 1.5rem) .3rem;
+}
+.bogen-kopf h4 { margin: 0 0 .15em; font-size: clamp(1.1rem, 1.9vw, 1.32rem); }
+.bogen-kurz {
+  font-size: .78rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--bf, var(--akzent-hell)); font-weight: 700; margin: 0 0 .8em;
+}
+.bogen-text {
+  padding: 0 clamp(1.1rem, 2.4vw, 1.5rem);
+  font-size: .9rem; color: var(--grau-hell); margin: 0 0 1rem;
+}
+.bogen-daten {
+  display: flex; flex-wrap: wrap; gap: .4rem;
+  padding: 0 clamp(1.1rem, 2.4vw, 1.5rem) clamp(1.2rem, 2.4vw, 1.5rem);
+}
+.bogen-daten b {
+  font-size: .72rem; font-weight: 600; letter-spacing: .03em;
+  color: var(--grau); padding: 4px 10px;
+  border: 1px solid rgba(255,255,255,.14); border-radius: 999px;
+}
+.bogen-daten span {
+  width: 100%; font-size: .72rem; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--grau); margin-bottom: .1rem;
+}
+
+/* ---- Begriffs-Erklärungen (Parcours, Pflock, Pfeil …) ---- */
+.begriffe {
+  display: grid; gap: 1px; margin-top: clamp(1.8rem, 4vw, 2.6rem);
+  background: rgba(255,255,255,.09);
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: var(--radius-gross); overflow: hidden;
+}
+@media (min-width: 780px)  { .begriffe.zwei  { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1100px) { .begriffe.drei  { grid-template-columns: repeat(3, 1fr); } }
+.begriff {
+  background: #0B0C0A; padding: clamp(1.15rem, 2.4vw, 1.6rem);
+  transition: background .4s var(--weich);
+}
+.begriff:hover { background: #10120E; }
+.begriff b {
+  display: block; font-family: var(--schrift-kopf);
+  font-size: 1.02rem; color: var(--creme); margin-bottom: .45em;
+}
+.begriff p { margin: 0; font-size: .88rem; color: var(--grau-hell); }
+
+
+
+
+/* ============================================================
+   ZEITRAFFER — die 48 Stunden sichtbar gemacht (Falk 30.07.)
+   Ersetzt die frühere Explosionszeichnung: dort war im Standbild
+   nicht erkennbar, dass sich etwas bewegt.
+   ============================================================ */
+.raffer {
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: var(--radius-gross);
+  padding: clamp(1.5rem, 3.4vw, 2.6rem);
+  background:
+    radial-gradient(130% 90% at 50% 0%, rgba(57,255,20,.09), transparent 62%),
+    rgba(255,255,255,.022);
+}
+.raffer-kopf {
+  display: flex; flex-wrap: wrap; align-items: center;
+  justify-content: space-between; gap: 1.2rem; margin-bottom: 1.6rem;
+}
+.raffer-kopf h3 { margin: 0 0 .3em; }
+.raffer-kopf p  { margin: 0; font-size: .92rem; color: var(--grau); max-width: 52ch; }
+
+.raffer-buehne {
+  position: relative; width: 100%;
+  /* Auf schmalen Schirmen war 16:9 viel zu flach (bei 270px Breite nur
+     152px hoch) — Uhr, Balken und Hinweis lagen uebereinander. Deshalb
+     eine Mindesthoehe und ein hoeheres Format auf dem Handy. */
+  aspect-ratio: 16 / 9; max-height: 62vh; min-height: 340px;
+  border-radius: var(--radius);
+  background:
+    radial-gradient(90% 70% at 50% 50%, rgba(255,255,255,.03), transparent 70%),
+    #000;
+  border: 1px solid rgba(255,255,255,.1);
+  overflow: hidden;
+  display: grid; place-items: center;
+  cursor: pointer; touch-action: manipulation;
+}
+.raffer-punkt {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: #39FF14;
+  box-shadow: 0 0 40px 10px rgba(57,255,20,.5);
+  will-change: width, height;
+}
+/* Anzeige oben: Uhr und Größe */
+.raffer-anzeige {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 3;
+  display: flex; justify-content: center; gap: clamp(1.4rem, 5vw, 3.4rem);
+  pointer-events: none; text-align: center;
+  padding: 14px 14px 26px;
+  /* Verlauf nach unten: die Werte bleiben lesbar, auch wenn der Punkt
+     darunter durchwächst. */
+  background: linear-gradient(180deg, rgba(0,0,0,.8), transparent);
+}
+.raffer-anzeige em {
+  display: block; font-style: normal; font-size: .68rem;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--grau);
+}
+.raffer-anzeige b {
+  font-family: var(--schrift-kopf); font-size: clamp(1rem, 2vw, 1.35rem);
+  color: var(--creme); font-variant-numeric: tabular-nums;
+}
+/* Fortschrittsbalken unten */
+.raffer-balken {
+  position: absolute; left: 14px; right: 14px; bottom: 40px; z-index: 3;
+  height: 3px; border-radius: 3px;
+  background: rgba(255,255,255,.12); pointer-events: none;
+}
+.raffer-balken i {
+  display: block; height: 100%; width: 0%; border-radius: 3px;
+  background: linear-gradient(90deg, #39FF14, #7BFF5C);
+  box-shadow: 0 0 12px -1px #39FF14;
+}
+.raffer-hinweis {
+  position: absolute; bottom: 0; left: 0; right: 0; z-index: 3;
+  padding: 16px 0 13px;
+  background: linear-gradient(0deg, rgba(0,0,0,.8), transparent);
+  text-align: center; font-size: .74rem; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--grau);
+  pointer-events: none; transition: opacity .5s;
+}
+.raffer-buehne.laeuft .raffer-hinweis { opacity: .85; }
+.raffer-buehne:not(.laeuft) .raffer-hinweis { opacity: .35; }
+
+
+/* Handy: hochkant statt breit, damit Anzeige/Punkt/Balken Platz haben */
+@media (max-width: 700px) {
+  .raffer-buehne { aspect-ratio: 3 / 4; min-height: 400px; }
+  .raffer-anzeige { gap: 1.2rem; padding: 12px 10px 22px; }
+  .raffer-anzeige b { font-size: 1.05rem; }
+  .raffer-hinweis { font-size: .66rem; letter-spacing: .1em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .raffer-punkt { transition: none !important; }
+}
+
+
+
+/* Scrollbare Tabelle: Fokusrahmen sichtbar + Schatten rechts als Hinweis,
+   dass dort noch Spalten stehen. */
+.tabelle-huelle {
+  position: relative;
+  scroll-behavior: smooth;
+}
+.tabelle-huelle:focus-visible {
+  outline: 3px solid var(--akzent-hell);
+  outline-offset: 3px; border-radius: 6px;
+}
+@media (max-width: 900px) {
+  .tabelle-huelle::after {
+    content: ""; position: sticky; right: 0; top: 0;
+    float: right; width: 44px; height: 100%;
+    margin-left: -44px; pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(0,0,0,.85));
+  }
+}
+
+
+
+/* ---- Verbände: Kürzel, ausgeschriebener Name, Erklärung ---- */
+.verbaende {
+  display: grid; gap: clamp(.9rem, 2vw, 1.4rem);
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  margin-top: clamp(1.4rem, 3vw, 2rem);
+}
+.verband {
+  border: 1px solid rgba(255,255,255,.11);
+  border-radius: var(--radius-gross);
+  padding: clamp(1.2rem, 2.6vw, 1.7rem);
+  background: rgba(255,255,255,.024);
+  transition: border-color .4s var(--weich), transform .4s var(--weich);
+}
+.verband:hover {
+  border-color: color-mix(in srgb, var(--akzent) 50%, transparent);
+  transform: translateY(-4px);
+}
+.verband b {
+  display: block; font-family: var(--schrift-kopf);
+  font-size: 1.3rem; color: var(--akzent-hell); line-height: 1.1;
+}
+.verband em {
+  display: block; font-style: normal; font-size: .74rem;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--grau); margin: .3rem 0 .8rem;
+}
+.verband p { margin: 0; font-size: .88rem; color: var(--grau-hell); }
+
+/* ---- Klappbereiche im Kontakt-Abschnitt (Falk 30.07.) ---- */
+.klapp {
+  display: grid; gap: .7rem;
+  margin-top: clamp(2.4rem, 5vw, 3.4rem);
+  text-align: left;
+}
+.klapp .frage summary { font-size: .96rem; }
+.klapp-inhalt {
+  padding: 0 clamp(1rem, 2.2vw, 1.4rem) clamp(1.2rem, 2.4vw, 1.5rem);
+}
+.klapp-inhalt > p {
+  font-size: .89rem; color: var(--grau-hell); margin-bottom: 1rem;
+}
+.klapp-inhalt address {
+  font-style: normal; line-height: 1.7;
+  padding: .9rem 1.1rem; border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.03);
+  font-size: .9rem; color: var(--creme);
+}
+.klapp-inhalt .begriffe { margin-top: 1.2rem; }
+.klapp-inhalt .preis { margin-top: 1.2rem; }
+
+
+/* ---- Kontaktformular ---- */
+.kformular {
+  display: grid; gap: 1rem;
+  margin-top: 1.4rem;
+}
+@media (min-width: 640px) {
+  .kformular { grid-template-columns: 1fr 1fr; }
+  .kfeld-breit { grid-column: 1 / -1; }
+}
+.kfeld { display: grid; gap: .4rem; }
+.kfeld > span {
+  font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--grau); font-weight: 600;
+}
+.kfeld input, .kfeld select, .kfeld textarea {
+  width: 100%; font: inherit; font-size: .92rem;
+  color: var(--creme);
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: var(--radius);
+  padding: .7rem .9rem;
+  transition: border-color .3s var(--weich), background .3s var(--weich);
+}
+.kfeld textarea { resize: vertical; min-height: 120px; line-height: 1.55; }
+.kfeld select {
+  appearance: none;
+  /* Pfeil als Hintergrundbild, damit kein fremdes Symbol nötig ist */
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--akzent-hell) 50%),
+    linear-gradient(135deg, var(--akzent-hell) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 2.4rem;
+}
+.kfeld select option { background: #12140F; color: var(--creme); }
+.kfeld input::placeholder, .kfeld textarea::placeholder { color: rgba(154,160,166,.6); }
+.kfeld input:focus, .kfeld select:focus, .kfeld textarea:focus {
+  outline: none;
+  border-color: var(--akzent);
+  background: rgba(255,255,255,.07);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--akzent) 22%, transparent);
+}
+.kformular button { width: 100%; margin-top: .3rem; }
+.kf-hinweis {
+  margin: .9rem 0 0; font-size: .78rem; color: var(--grau);
+  line-height: 1.5;
+}
+.kf-fehler {
+  margin: .7rem 0 0; font-size: .84rem; font-weight: 600;
+  color: var(--rot-hell);
+}
+
+/* Name im Fuß als Mail-Link */
+.fuss-mail {
+  color: var(--grau); text-decoration: none;
+  border-bottom: 1px dotted rgba(255,255,255,.3);
+  transition: color .3s, border-color .3s;
+}
+.fuss-mail:hover {
+  color: var(--creme);
+  border-bottom-color: var(--akzent-hell);
+}
+
+/* ---- Vergleichstabelle der drei Apps ---- */
+.vergleich {
+  width: 100%; border-collapse: collapse;
+  margin-top: clamp(1.6rem, 3.4vw, 2.4rem);
+  font-size: .92rem; min-width: 620px;
+  /* GLEICH BREITE SPALTEN. Ohne das richtet sich jede Spalte nach ihrem
+     längsten Text — die FaNiCa-Spalte war dadurch 442 px breit, Instinct
+     nur 261 px, und die beiden standen weit auseinander.
+     (Falk 31.07.: „sind nun ziemlich weit auseinander, führe sie wieder
+     näher zusammen.") Mit fixed + gleicher Breite je App-Spalte stehen
+     die drei sauber im Raster; lange Texte brechen dann um. */
+  table-layout: fixed;
+}
+/* Die Merkmal-Spalte links darf schmal bleiben, die drei App-Spalten
+   teilen sich den Rest zu gleichen Teilen. */
+.vergleich thead th:first-child { width: 15rem; }
+.vergleich thead th.app-1,
+.vergleich thead th.app-2,
+.vergleich thead th.app-3 { width: calc((100% - 15rem) / 3); }
+.vergleich th, .vergleich td {
+  padding: .85rem 1rem; text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,.09);
+  vertical-align: top;
+}
+.vergleich thead th {
+  font-family: var(--schrift-kopf); font-size: 1rem;
+  color: var(--creme); white-space: nowrap;
+  border-bottom: 2px solid rgba(255,255,255,.16);
+  padding-bottom: 1rem;
+}
+/* Je Spalte die Farbe ihrer App.
+   REIHENFOLGE BEACHTEN: Spalte 1 = FaNiCa Fun (rot), 2 = Instinct
+   Scoring (oliv), 3 = NeonPunkt (neongrün). Beim Spaltentausch am
+   31.07. blieben diese Farben zunächst stehen — rot und oliv waren
+   dadurch vertauscht. Wer die Spalten umsortiert, muss auch hier ran. */
+.vergleich thead th.app-1 { color: var(--rot-hell); }
+.vergleich thead th.app-2 { color: var(--oliv-hell); }
+.vergleich thead th.app-3 { color: #7BFF5C; }
+.vergleich tbody th {
+  font-family: var(--schrift-text); font-weight: 600;
+  font-size: .86rem; color: var(--grau);
+  white-space: nowrap; width: 1%;
+}
+.vergleich td { color: var(--grau-hell); }
+.vergleich tbody tr { transition: background .3s var(--weich); }
+.vergleich tbody tr:hover { background: rgba(255,255,255,.035); }
+
+/* ---- Häufige Fragen (aufklappbar) ---- */
+.fragen {
+  display: grid; gap: .7rem;
+  margin-top: clamp(1.6rem, 3.4vw, 2.4rem);
+}
+@media (min-width: 1100px) { .fragen { grid-template-columns: 1fr 1fr; column-gap: 1.4rem; } }
+.frage {
+  border: 1px solid rgba(255,255,255,.11);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,.024);
+  transition: border-color .35s var(--weich), background .35s var(--weich);
+  align-self: start;
+}
+.frage[open] {
+  border-color: color-mix(in srgb, var(--akzent) 45%, transparent);
+  background: rgba(255,255,255,.045);
+}
+.frage summary {
+  cursor: pointer; list-style: none;
+  padding: clamp(.9rem, 2vw, 1.2rem) clamp(1rem, 2.2vw, 1.4rem);
+  padding-right: 3rem; position: relative;
+  font-family: var(--schrift-kopf); font-size: 1rem;
+  color: var(--creme);
+}
+.frage summary::-webkit-details-marker { display: none; }
+.frage summary::after {
+  content: "+"; position: absolute;
+  right: clamp(1rem, 2.2vw, 1.4rem); top: 50%; transform: translateY(-50%);
+  font-family: var(--schrift-kopf); font-size: 1.5rem; font-weight: 300;
+  color: var(--akzent-hell); transition: transform .35s var(--weich);
+  line-height: 1;
+}
+.frage[open] summary::after { transform: translateY(-50%) rotate(45deg); }
+.frage summary:hover { color: var(--akzent-hell); }
+.frage p {
+  margin: 0; padding: 0 clamp(1rem, 2.2vw, 1.4rem) clamp(1rem, 2.2vw, 1.3rem);
+  font-size: .89rem; color: var(--grau-hell); line-height: 1.6;
+}
+
+/* ---- Startseiten-Vorstellung: echter Screenshot + nummerierte Erklärung ---- */
+.startseite {
+  display: grid; gap: clamp(1.8rem, 4vw, 3.4rem);
+  align-items: center; margin-top: clamp(1.8rem, 4vw, 2.8rem);
+}
+@media (min-width: 880px) {
+  .startseite { grid-template-columns: minmax(260px, 380px) 1fr; }
+}
+/* Auf grossen Schirmen darf das Handy hier genauso wachsen wie die
+   uebrigen Mockups — sonst wirkt es im selben Kapitel zu klein. */
+@media (min-width: 2200px) { .startseite { grid-template-columns: 420px 1fr; } }
+@media (min-width: 3000px) { .startseite { grid-template-columns: 540px 1fr; }
+}
+.startpunkte { list-style: none; padding: 0; margin: 0; display: grid; gap: .9rem; }
+.startpunkt {
+  display: flex; gap: 1rem; align-items: flex-start;
+  padding: clamp(.9rem, 2vw, 1.2rem) clamp(1rem, 2.2vw, 1.4rem);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,.026);
+  transition: border-color .4s var(--weich), background .4s var(--weich),
+              transform .4s var(--weich);
+}
+.startpunkt:hover {
+  border-color: color-mix(in srgb, var(--akzent) 55%, transparent);
+  background: rgba(255,255,255,.05);
+  transform: translateX(4px);
+}
+.startpunkt-nr {
+  flex: none; width: 30px; height: 30px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--akzent); color: #08080A;
+  font-family: var(--schrift-kopf); font-size: .9rem; font-weight: 800;
+  box-shadow: 0 5px 16px -6px var(--akzent);
+}
+.startpunkt-name {
+  display: block; font-family: var(--schrift-kopf);
+  font-size: 1.02rem; color: var(--creme); margin-bottom: .2em;
+}
+.startpunkt span { font-size: .88rem; color: var(--grau-hell); line-height: 1.5; }
+.startzeile {
+  margin-top: 1.4rem; padding-left: 1rem;
+  border-left: 2px solid var(--akzent);
+  font-size: .88rem; color: var(--grau); font-style: italic;
+}
+
+/* ---- Funktionsumfang: kompaktes Raster mit Name + Halbsatz ---- */
+.funktionen {
+  display: grid; gap: 1px;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  background: rgba(255,255,255,.09);
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: var(--radius-gross);
+  overflow: hidden;
+  margin-top: clamp(1.6rem, 3.4vw, 2.4rem);
+}
+.funktion {
+  background: #0A0B09;
+  padding: clamp(1rem, 2.2vw, 1.4rem);
+  transition: background .35s var(--weich);
+}
+.funktion:hover { background: #10120E; }
+.funktion b {
+  display: block; font-family: var(--schrift-kopf);
+  font-size: .98rem; color: var(--akzent-hell); margin-bottom: .3em;
+  letter-spacing: .01em;
+}
+.funktion span { font-size: .85rem; color: var(--grau-hell); line-height: 1.5; }
+
+/* ---- Anzeigen-Liste (zweispaltig ab Tablet) ---- */
+.anzeigen {
+  list-style: none; padding: 0;
+  margin: clamp(1.2rem, 2.6vw, 1.8rem) 0 0;
+  display: grid; gap: .55rem;
+}
+@media (min-width: 720px)  { .anzeigen { grid-template-columns: 1fr 1fr; column-gap: 2rem; } }
+@media (min-width: 1500px) { .anzeigen { grid-template-columns: repeat(3, 1fr); } }
+.anzeigen li {
+  position: relative; padding-left: 1.7rem;
+  font-size: .89rem; color: var(--grau-hell);
+}
+.anzeigen li::before {
+  content: ""; position: absolute; left: 0; top: .55em;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--akzent);
+  box-shadow: 0 0 10px -1px var(--akzent);
+}
+
+/* ---- Trophäen ---- */
+.trophaeen {
+  display: grid; gap: clamp(.9rem, 2vw, 1.4rem);
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  margin-top: clamp(1.8rem, 4vw, 2.6rem);
+}
+.trophaee {
+  position: relative;
+  border: 1px solid rgba(255,255,255,.11);
+  border-radius: var(--radius-gross);
+  padding: clamp(1.3rem, 2.6vw, 1.8rem);
+  background:
+    radial-gradient(100% 70% at 50% 0%, rgba(255,255,255,.06), transparent 62%),
+    rgba(255,255,255,.022);
+  text-align: center;
+  transition: transform .45s var(--weich), border-color .45s var(--weich),
+              box-shadow .45s var(--weich);
+}
+.trophaee:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--akzent) 55%, transparent);
+  box-shadow: 0 24px 54px -30px color-mix(in srgb, var(--akzent) 80%, transparent);
+}
+.trophaee-zeichen {
+  font-size: clamp(2.4rem, 5vw, 3.2rem); line-height: 1;
+  display: block; margin-bottom: .5rem;
+  filter: drop-shadow(0 6px 20px rgba(0,0,0,.6));
+  transition: transform .45s var(--weich);
+}
+.trophaee:hover .trophaee-zeichen { transform: scale(1.14) rotate(-6deg); }
+.trophaee h4 { margin: 0 0 .5em; font-size: 1.08rem; }
+.trophaee p { margin: 0; font-size: .86rem; color: var(--grau-hell); }
+
+/* ---- Zielscheibe mit Wertungsvergleich ---- */
+.scheibe-block {
+  display: grid; gap: clamp(1.6rem, 4vw, 3rem);
+  align-items: center; margin-top: clamp(2rem, 4vw, 3rem);
+}
+@media (min-width: 900px) { .scheibe-block { grid-template-columns: .9fr 1.1fr; } }
+
+.scheibe-buehne {
+  position: relative; width: 100%; max-width: 400px; margin-inline: auto;
+  aspect-ratio: 1 / 1;
+}
+.scheibe-buehne svg { width: 100%; height: 100%; }
+.scheibe-zone {
+  cursor: pointer;
+  transition: filter .3s var(--weich), opacity .3s var(--weich);
+}
+.scheibe-zone:hover { filter: brightness(1.35); }
+.scheibe-zone.aktiv { filter: brightness(1.5) saturate(1.3); }
+.scheibe-buehne text { pointer-events: none; user-select: none; }
+
+.wertung { width: 100%; border-collapse: collapse; font-size: .92rem; }
+.wertung th, .wertung td {
+  padding: .72rem .9rem; text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,.09);
+}
+.wertung th {
+  font-family: var(--schrift-kopf); font-size: .74rem;
+  letter-spacing: .13em; text-transform: uppercase;
+  color: var(--akzent-hell); white-space: nowrap;
+}
+.wertung td { color: var(--grau-hell); }
+.wertung td:last-child {
+  text-align: right; font-family: var(--schrift-kopf);
+  font-size: 1.25rem; font-weight: 800; color: var(--creme);
+  font-variant-numeric: tabular-nums;
+}
+.wertung tr { transition: background .3s var(--weich); }
+.wertung tbody tr:hover { background: rgba(255,255,255,.035); }
+.wertung-kopf {
+  display: flex; align-items: baseline; gap: .8rem;
+  margin-bottom: .9rem; flex-wrap: wrap;
+}
+.wertung-kopf b {
+  font-family: var(--schrift-kopf); font-size: clamp(1.3rem, 2.6vw, 1.8rem);
+  color: var(--akzent-hell);
+}
+.wertung-kopf span { font-size: .82rem; color: var(--grau); }
+
+/* ---- Spine-Rechner ---- */
+.spine {
+  display: grid; gap: clamp(1.4rem, 3.4vw, 2.6rem);
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+@media (min-width: 980px) { .spine { grid-template-columns: 1.05fr .95fr; } }
+.spine-felder { display: grid; gap: .55rem; }
+.spine-feld {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 1rem; padding: .68rem .95rem;
+  border: 1px solid rgba(255,255,255,.1); border-radius: 12px;
+  background: rgba(255,255,255,.022);
+  transition: border-color .35s var(--weich), background .35s var(--weich);
+}
+.spine-feld:hover {
+  border-color: color-mix(in srgb, var(--akzent) 50%, transparent);
+  background: rgba(255,255,255,.045);
+}
+.spine-feld b { font-size: .92rem; color: var(--creme); font-weight: 600; }
+.spine-feld span { font-size: .78rem; color: var(--grau); text-align: right; }
+
+/* ---- Stufen-Vergleich (Gratis / Premium / Premium+) ---- */
+.stufen {
+  display: grid; gap: clamp(1rem, 2.4vw, 1.6rem);
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  margin-top: clamp(2rem, 4vw, 3rem);
+  align-items: start;
+}
+.stufe {
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: var(--radius-gross);
+  padding: clamp(1.4rem, 3vw, 2rem);
+  background: rgba(255,255,255,.025);
+  transition: transform .45s var(--weich), border-color .45s var(--weich),
+              box-shadow .45s var(--weich);
+}
+.stufe:hover { transform: translateY(-5px); }
+.stufe.hervor {
+  border-color: color-mix(in srgb, var(--akzent) 62%, transparent);
+  background:
+    radial-gradient(110% 70% at 50% 0%, color-mix(in srgb, var(--akzent) 14%, transparent), transparent 62%),
+    rgba(255,255,255,.04);
+  box-shadow: 0 24px 60px -34px var(--akzent);
+}
+.stufe h4 {
+  margin: 0 0 .1em; font-size: 1.2rem;
+}
+.stufe-preis {
+  font-family: var(--schrift-kopf); font-size: clamp(1.9rem, 4vw, 2.5rem);
+  font-weight: 800; color: var(--akzent-hell); line-height: 1;
+  margin: .5rem 0 .2rem;
+}
+.stufe-zeile { font-size: .8rem; color: var(--grau); margin-bottom: 1.2rem; }
+.stufe ul { list-style: none; padding: 0; margin: 0 0 1.1rem; }
+.stufe li {
+  position: relative; padding-left: 1.6rem; margin-bottom: .55rem;
+  font-size: .88rem; color: var(--grau-hell);
+}
+.stufe li::before {
+  content: "✓"; position: absolute; left: 0; top: -.05em;
+  color: var(--akzent-hell); font-weight: 700;
+}
+.stufe-grenze {
+  font-size: .76rem; color: var(--grau);
+  padding-top: .9rem; border-top: 1px solid rgba(255,255,255,.09);
+}
+
+/* ---- Farbreihe NeonPunkt ---- */
+.farbreihe {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(74px, 1fr));
+  gap: .6rem; margin-top: clamp(1.6rem, 3.4vw, 2.4rem);
+}
+.farbfeld {
+  text-align: center; padding: .8rem .3rem .6rem;
+  border: 1px solid rgba(255,255,255,.09); border-radius: 12px;
+  background: rgba(255,255,255,.02);
+  transition: transform .35s var(--weich), border-color .35s var(--weich);
+}
+.farbfeld:hover { transform: translateY(-4px); border-color: var(--ff); }
+.farbfeld i {
+  display: block; width: 26px; height: 26px; border-radius: 50%;
+  margin: 0 auto .5rem; background: var(--ff);
+  box-shadow: 0 0 18px -2px var(--ff);
+}
+/* Namen bewusst NICHT in der Eigenfarbe — Indigo/Blau/Lila wären
+   auf dunklem Grund kaum lesbar. Die Farbe zeigt der Punkt darüber. */
+.farbfeld span { font-size: .68rem; color: var(--grau-hell); letter-spacing: .04em; }
+.farbfeld em {
+  display: block; font-style: normal; font-size: .6rem;
+  color: rgba(154,160,166,.6); margin-top: .15rem;
+}
+
+/* ---- Ablauf-Schritte (Renn-Woche, Beitritt) ---- */
+.schritte {
+  display: grid; gap: clamp(.9rem, 2vw, 1.3rem);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  margin-top: clamp(1.8rem, 4vw, 2.6rem);
+  counter-reset: schritt;
+}
+/* Feste Spaltenzahl statt auto-fit — sonst brechen 6 Schritte als 5+1 um
+   und der letzte steht allein in der zweiten Reihe. */
+@media (min-width: 760px)  { .schritte { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1180px) { .schritte { grid-template-columns: repeat(3, 1fr); } }
+.schritt {
+  position: relative; padding: clamp(1.2rem, 2.6vw, 1.7rem);
+  padding-top: clamp(1.7rem, 3.4vw, 2.2rem);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--radius-gross);
+  background: rgba(255,255,255,.024);
+  transition: border-color .4s var(--weich), transform .4s var(--weich);
+}
+.schritt:hover {
+  border-color: color-mix(in srgb, var(--akzent) 50%, transparent);
+  transform: translateY(-4px);
+}
+.schritt b.nr {
+  position: absolute; top: -14px; left: clamp(1.2rem, 2.6vw, 1.7rem);
+  width: 30px; height: 30px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--akzent); color: #08080A;
+  font-family: var(--schrift-kopf); font-size: .88rem; font-weight: 800;
+  box-shadow: 0 6px 18px -6px var(--akzent);
+}
+.schritt h4 { margin: 0 0 .4em; font-size: 1.02rem; }
+.schritt p { margin: 0; font-size: .87rem; color: var(--grau-hell); }
+
+/* ============================================================
+   GROSSE BILDSCHIRME — die Seite darf mitwachsen statt
+   als schmale Spalte in der Mitte zu kleben.
+   ============================================================ */
+@media (min-width: 1900px) {
+  :root { --breite: 1500px; --breite-schmal: 900px; }
+  /* rem-Basis ist html — nur hier wirkt die Skalierung auf clamp()-Werte. */
+  html { font-size: 17.5px; }
+}
+@media (min-width: 2400px) {
+  :root { --breite: 1820px; --breite-schmal: 1000px; --rand: 72px; }
+  html { font-size: 19px; }
+  .abschnitt { padding: clamp(120px, 12vh, 210px) 0; }
+
+}
+@media (min-width: 3200px) {
+  /* Container NICHT weiter aufreißen: 2400px ist die Grenze, ab der eine
+     Textspalte nicht mehr wie ein Layout wirkt, sondern wie ein Leck.
+     Stattdessen bekommt der Inhalt mehr Luft und größere Bausteine. */
+  :root { --breite: 2400px; --breite-schmal: 1500px; --rand: 140px; }
+  html { font-size: 23px; }
+
+  /* Fließtext bekommt ein lesbares Maß und rückt in die Mitte,
+     statt als schmale Spalte am linken Rand zu kleben. */
+  .abschnitt .huelle > .auf > p,
+  .abschnitt .huelle > .auf > .gross { max-width: 62ch; }
+  .huelle > .auf > h3 { max-width: 26ch; }
+  .handy { max-width: 520px; }
+  /* Zeichnung samt Beschriftungen — nicht größer, sonst wird der
+     Rahmen wieder größer als der Inhalt. */
+
+  .qr svg { width: 128px; height: 128px; }
+  .scheibe-buehne { max-width: 700px; }
+
+  /* Der Kapitel-Einstieg (Claim + Beschreibung) läuft zweispaltig —
+     sonst steht rechts neben einer schmalen Textsäule nur Schwarz. */
+  .einstieg {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: clamp(3rem, 6vw, 7rem); align-items: start;
+  }
+  .einstieg > * { margin-top: 0; }
+
+  /* Auf 4K passen mehr Karten nebeneinander — sonst bleibt viel Fläche leer */
+  .boegen     { grid-template-columns: repeat(4, 1fr); }
+  .trophaeen  { grid-template-columns: repeat(5, 1fr); }
+  .schritte   { grid-template-columns: repeat(3, 1fr); }
+  .stufen     { grid-template-columns: repeat(3, 1fr); }
+  .farbreihe  { grid-template-columns: repeat(8, 1fr); }
+}
+
+/* Der Hero darf auf sehr hohen Fenstern nicht zum Schwarzloch werden:
+   Höhe deckeln, damit man nicht ewig durch Leere scrollt. */
+@media (min-height: 1400px) {
+  .hero { min-height: 1150px; }
+}
+
+/* --------------------------------- Bewegung aus: alles bleibt nutzbar */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+  .auf { opacity: 1 !important; transform: none !important; }
+  .licht span, .spuren i { animation: none !important; }
+  .morph-marke, .morph-markelinie { opacity: 1 !important; }
+  .scrollhinweis::after { animation: none !important; }
+  /* Keine Neigung, kein wandernder Schein, kein Fortschrittsbalken-Lauf */
+  .handy { transform: none !important; }
+  .karte::before { display: none !important; }
+  .fortschritt { transition: none !important; }
+}
+
+/* ------------------------------------------------------ Druckfassung */
+@media print {
+  .kopf, .kulisse, .koerner, .licht, .spuren, .scrollhinweis,
+  .morph-buehne, .spielfeld { display: none !important; }
+  body { background: #fff; color: #000; }
+}
+
+/* ============================================================
+   BUTTONS — Falks Lieblingsdesigns aus Obsidian
+   (Erinnerung: button-designs-hover-effekte · 6 Hover-Effekte)
+   Muster: dunkler Grund, Farbverlauf, ::before-Sweep beim Hover,
+   Beschriftung im <span> darüber.
+   ============================================================ */
+.nbtn {
+  position: relative; overflow: hidden;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: .6rem;
+  padding: 13px 26px;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 11px;
+  background: #0c1220;
+  color: var(--creme);
+  font-family: var(--schrift-kopf);
+  font-size: .98rem; font-weight: 700; letter-spacing: .02em;
+  text-decoration: none; cursor: pointer;
+  transition: transform .15s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.nbtn span { position: relative; z-index: 2; }
+.nbtn:hover { transform: translateY(-2px); color: var(--creme); }
+.nbtn:focus-visible { outline: 3px solid var(--akzent-hell); outline-offset: 3px; }
+.nbtn.gross-knopf { padding: 15px 32px; font-size: 1.04rem; }
+
+/* Ripple — Welle vom Zentrum (FaNiCa Fun, rot) */
+.nbtn.b-ripple {
+  background: linear-gradient(180deg, #3a0d14, #24080e);
+  border-color: var(--rot); color: #ffe0e4;
+}
+.nbtn.b-ripple::before {
+  content: ""; position: absolute; left: 50%; top: 50%;
+  width: 0; height: 0; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,120,140,.55), transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: width .5s ease, height .5s ease;
+}
+.nbtn.b-ripple:hover::before { width: 300px; height: 300px; }
+.nbtn.b-ripple:hover { box-shadow: 0 0 22px -4px var(--rot); }
+
+/* Grass — Halme wachsen von unten (Instinct, oliv) */
+.nbtn.b-grass {
+  background: linear-gradient(180deg, #1b2612, #101809);
+  border-color: var(--oliv); color: #e6f4c9;
+}
+.nbtn.b-grass::before {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 0;
+  background: linear-gradient(0deg, rgba(167,188,85,.55), transparent);
+  transition: height .35s ease;
+}
+.nbtn.b-grass:hover::before { height: 100%; }
+.nbtn.b-grass:hover { box-shadow: 0 0 22px -4px var(--oliv-hell); }
+
+/* Helix — Schimmer-Sweep (NeonPunkt, neon) */
+.nbtn.b-helix {
+  background: linear-gradient(135deg, #0d2b12, #06180c);
+  border-color: #39FF14; color: #d8ffcd;
+}
+.nbtn.b-helix::before {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(115deg, transparent 30%,
+              rgba(120,255,90,.45) 50%, transparent 70%);
+  transform: translateX(-120%); transition: transform .6s ease;
+}
+.nbtn.b-helix:hover::before { transform: translateX(120%); }
+.nbtn.b-helix:hover { box-shadow: 0 0 22px -4px #39FF14; }
+
+/* Scratch — Metall-Glanz (neutrale Knöpfe, z. B. Zurück) */
+.nbtn.b-scratch {
+  background: linear-gradient(120deg, #2a2e34, #454a53 50%, #2a2e34);
+  border-color: rgba(255,255,255,.32); color: var(--creme);
+}
+.nbtn.b-scratch::before {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(110deg, transparent 40%,
+              rgba(255,255,255,.5) 50%, transparent 60%);
+  transform: translateX(-120%); transition: transform .55s ease;
+}
+.nbtn.b-scratch:hover::before { transform: translateX(120%); }
+
+/* Heat — warmes Glühen von unten */
+.nbtn.b-heat {
+  background: linear-gradient(180deg, #2a100c, #180a08);
+  border-color: #d8552f; color: #ffd8c9;
+}
+.nbtn.b-heat::before {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 35%;
+  background: linear-gradient(0deg, rgba(255,120,50,.6), transparent);
+  opacity: .4; transition: opacity .3s ease, height .3s ease;
+}
+.nbtn.b-heat:hover::before { opacity: 1; height: 100%; }
+
+/* Lantern — Laternenschein */
+.nbtn.b-lantern {
+  background: linear-gradient(180deg, #2a230c, #181206);
+  border-color: #d8b52f; color: #ffedb0;
+}
+.nbtn.b-lantern::before {
+  content: ""; position: absolute; left: 50%; top: 50%;
+  width: 0; height: 0; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,214,90,.55), transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: width .45s ease, height .45s ease;
+}
+.nbtn.b-lantern:hover::before { width: 260px; height: 260px; }
+
+/* ---- App-Kacheln im Hero: die drei Apps zum Anklicken ---- */
+.app-reihe {
+  display: grid; gap: clamp(.8rem, 2.2vw, 1.6rem);
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 760px; margin: clamp(2.4rem, 6vh, 4rem) auto 0;
+}
+.app-kachel {
+  display: flex; flex-direction: column; align-items: center; gap: .55rem;
+  padding: clamp(1rem, 2.4vw, 1.5rem) .8rem;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: var(--radius-gross);
+  background: rgba(255,255,255,.03);
+  text-decoration: none; color: var(--creme);
+  transition: transform .35s var(--weich), border-color .35s var(--weich),
+              box-shadow .35s var(--weich), background .35s var(--weich);
+}
+.app-kachel img {
+  width: clamp(52px, 9vw, 76px); height: auto;
+  border-radius: 18px;
+  box-shadow: 0 8px 22px -10px rgba(0,0,0,.8);
+  transition: transform .35s var(--weich);
+}
+/* Der Name darf zwei Zeilen brauchen ("Instinct Scoring"), soll die
+   Kachel aber nicht höher machen als die Nachbarn — deshalb bekommt er
+   festen Platz für zwei Zeilen und die Kurzform sitzt darunter am Fuß. */
+.app-kachel b {
+  font-family: var(--schrift-kopf); font-size: clamp(.86rem, 1.5vw, 1.02rem);
+  letter-spacing: .01em; text-align: center; line-height: 1.2;
+  min-height: 2.4em;
+  display: flex; align-items: center; justify-content: center;
+}
+.app-kachel span {
+  margin-top: auto;
+  font-size: .72rem; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--af); font-weight: 700; text-align: center;
+  line-height: 1.3; hyphens: none;
+}
+.app-kachel:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--af) 65%, transparent);
+  background: rgba(255,255,255,.06);
+  box-shadow: 0 20px 44px -22px var(--af);
+  color: var(--creme);
+}
+.app-kachel:hover img { transform: scale(1.08); }
+
+/* ---- Logo-Paar: eigenes Logo × Kooperationslogo ---- */
+.hero-logos {
+  display: flex; align-items: center; justify-content: center;
+  gap: clamp(1rem, 3vw, 2.4rem); flex-wrap: wrap;
+  margin-bottom: clamp(1.2rem, 3vw, 2rem);
+}
+/* Das Kooperationslogo steht neben Falks Logo, aber untergeordnet —
+   es ist der Partner, nicht die Hauptmarke. Rund 62 % der Größe. */
+.hero-logo-klein { width: clamp(112px, 17vw, 285px); }
+.hero-logos-klein { margin: 0; }
+.hero-logos-klein img { max-width: 220px; }
+.hero-logos-klein img + img { max-width: 140px; }
+.logo-paar {
+  display: flex; align-items: center; gap: clamp(.8rem, 2.4vw, 1.6rem);
+  flex-wrap: wrap; margin-bottom: 1.2rem;
+}
+.logo-mal {
+  font-family: var(--schrift-kopf); font-size: 1.6rem;
+  color: var(--grau); font-weight: 300;
+}
+.kapitel-logo-klein { width: clamp(90px, 13vw, 150px) !important; }
+
+/* ---- Weiterlesen-Bereich ---- */
+.weiterlesen {
+  margin-top: clamp(2.4rem, 5vw, 3.6rem);
+  padding: clamp(1.4rem, 3vw, 2.2rem);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: var(--radius-gross);
+  background:
+    radial-gradient(120% 90% at 50% 0%,
+      color-mix(in srgb, var(--akzent) 12%, transparent), transparent 62%),
+    rgba(255,255,255,.026);
+  text-align: center;
+}
+.weiter-hinweis {
+  margin: 1rem auto 0; max-width: 58ch;
+  font-size: .9rem; color: var(--grau-hell); line-height: 1.6;
+}
+.store-hinweis {
+  font-size: .78rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--grau); align-self: center;
+}
+
+/* ---- Unterseiten ---- */
+.unterseite {
+  padding: clamp(110px, 14vh, 160px) 0 clamp(60px, 10vh, 100px);
+}
+.unter-block {
+  margin-top: clamp(2.6rem, 6vw, 4.4rem);
+  scroll-margin-top: 100px;
+}
+.unter-block > h2 {
+  font-size: clamp(1.5rem, 3.4vw, 2.4rem);
+  margin-bottom: .5em;
+}
+.unter-block > h2::before {
+  content: ""; display: block;
+  width: 52px; height: 3px; border-radius: 3px;
+  margin-bottom: .7rem;
+  background: linear-gradient(90deg, var(--akzent), transparent);
+}
+
+/* ============================================================
+   LESBARKEIT — Falk 31.07.2026: "Die Schriften muessen deutlicher
+   sein und besser lesbar gemacht werden."
+   Vorgehen: hellere Grautoene (mehr Kontrast gegen Schwarz),
+   etwas groessere Grundschrift, kraeftigere Strichstaerke bei
+   Kleintext. Wirkt ueberall, weil an den Variablen gedreht wird.
+   ============================================================ */
+:root {
+  --grau:      #A9B0B9;   /* vorher zu dunkel gegen Schwarz */
+  --grau-hell: #DDE1E6;
+}
+html { font-size: 17px; }             /* rem-Basis: alles waechst mit */
+body { line-height: 1.72; letter-spacing: .005em; }
+
+/* Kleintext war der schwaechste Punkt — hier Groesse + Gewicht hoch */
+.leise      { color: var(--grau-hell); font-size: .97rem; }
+.preis      { color: var(--grau); font-size: .9rem; }
+.bogen-text,
+.block-text ul li,
+.weiter-hinweis { font-size: .96rem; color: var(--grau-hell); }
+.bogen-daten b,
+.kennung        { font-weight: 700; }
+.bogen-daten b  { color: var(--grau-hell); font-size: .76rem; }
+
+/* ============================================================
+   HANDY-OPTIMIERUNG — Falk 31.07.2026
+   "die Boegen werden klappbar und nicht so gross auf dem Handy
+    dargestellt, die scheibe kann man auf dem Handy auch nicht
+    lesen und das scrollen ist fuer das handy sehr anstrengend
+    da die seiten nicht wirklich nachladen."
+   ============================================================ */
+
+/* ---- Boegen: klappbar (<details>) ---- */
+.bogen > summary.bogen-kopf {
+  display: flex; align-items: center; gap: .9rem;
+  padding: .85rem 1rem;
+  cursor: pointer; list-style: none;
+  transition: background .3s var(--weich);
+}
+.bogen > summary.bogen-kopf::-webkit-details-marker { display: none; }
+.bogen > summary.bogen-kopf:hover { background: rgba(255,255,255,.04); }
+.bogen-vorschau {
+  flex: 0 0 auto; width: 42px; height: 56px;
+  display: grid; place-items: center; border-radius: 10px;
+  background: radial-gradient(70% 90% at 50% 100%,
+              color-mix(in srgb, var(--bf) 26%, transparent), #0C0F0B 72%);
+}
+.bogen-vorschau svg { width: auto; height: 82%; }
+.bogen-titel { flex: 1 1 auto; min-width: 0; }
+.bogen-titel b {
+  display: block; font-family: var(--schrift-kopf);
+  font-size: 1.05rem; line-height: 1.25; color: var(--creme);
+}
+.bogen-titel .bogen-kurz {
+  display: block; font-size: .74rem; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--bf, var(--akzent-hell));
+  font-weight: 700; margin: .15em 0 0;
+}
+.bogen-pfeil {
+  flex: 0 0 auto; width: 11px; height: 11px;
+  border-right: 2px solid var(--grau); border-bottom: 2px solid var(--grau);
+  transform: rotate(45deg); margin-right: .35rem;
+  transition: transform .3s var(--weich);
+}
+.bogen[open] > summary .bogen-pfeil { transform: rotate(-135deg); }
+.bogen-inhalt { padding-bottom: .3rem; }
+.bogen-inhalt .bogen-buehne { border-top: 1px solid rgba(255,255,255,.09); }
+.bogen-inhalt .bogen-text { padding-top: 1rem; }
+
+/* Ab Tablet-Breite dauerhaft offen — am Rechner soll niemand erst
+   klicken muessen. Der Kopf bleibt als Ueberschrift stehen, verliert
+   aber Klapp-Pfeil, Mini-Vorschau und Klickbarkeit.
+   WICHTIG: `display` auf dem Inhalt ueberstimmt das Zu-Sein von
+   <details> — deshalb reicht CSS allein, ohne JS und ohne [open]. */
+@media (min-width: 780px) {
+  .bogen > .bogen-inhalt { display: block; }
+  .bogen > summary.bogen-kopf {
+    pointer-events: none; cursor: default;
+    padding: clamp(1.1rem,2.4vw,1.5rem) clamp(1.1rem,2.4vw,1.5rem) .2rem;
+  }
+  .bogen > summary.bogen-kopf:hover { background: none; }
+  .bogen-vorschau, .bogen-pfeil { display: none; }
+  .bogen-titel b { font-size: clamp(1.1rem, 1.9vw, 1.32rem); }
+  .bogen-inhalt .bogen-buehne { border-top: 0; }
+}
+
+/* Auf schmalen Schirmen die Bogen-Zeichnung kleiner halten */
+@media (max-width: 779px) {
+  .boegen { grid-template-columns: 1fr; gap: .7rem; }
+  .bogen-buehne { aspect-ratio: 16 / 11; }
+  .bogen-buehne svg { height: 92%; max-width: 62%; }
+}
+
+/* ---- Zielscheibe auf dem Handy lesbar ---- */
+@media (max-width: 700px) {
+  .scheibe-block { grid-template-columns: 1fr; gap: 1.2rem; }
+  .scheibe-buehne {
+    width: 100%; max-width: 420px; margin-inline: auto;
+  }
+  /* Die Ringzahlen waren bei 320-420 px Breite nur noch Punkte.
+     SVG-Text skaliert mit dem viewBox, deshalb hier hochsetzen. */
+  .scheibe-buehne text {
+    font-size: 13px !important; font-weight: 800 !important;
+    paint-order: stroke fill;
+    stroke: rgba(0,0,0,.72); stroke-width: 3px; stroke-linejoin: round;
+  }
+  .scheibe-liste li { font-size: .95rem; }
+}
+
+/* ---- Fluessiges Scrollen + echtes Nachladen ---- */
+@media (max-width: 900px) {
+  /* Grosse, dauerhaft animierte Hintergrundebenen sind auf dem Handy
+     der Hauptgrund fuer hakeliges Scrollen (jede Bewegung erzwingt ein
+     Neuzeichnen der ganzen Flaeche). Sie bleiben sichtbar, stehen aber. */
+  /* NUR die Bewegung anhalten — die Deckkraft bleibt, wie sie ist.
+     (Ein früherer Versuch setzte hier opacity:.5 und färbte damit den
+     ganzen Hintergrund bunt statt dunkel. Deckkraft nie anfassen.) */
+  .hologramm, .gitter, .koerner { animation: none !important; }
+  .hologramm::before, .hologramm::after { animation: none !important; }
+  .kulisse { background-attachment: scroll !important; }
+
+  /* 🔴 DIE eigentliche Bremse (Falk 31.07.: „auf dem Handy muss
+     flüssiger laufen im Browser"): die .licht-Ebenen sind bis zu
+     120vw grosse Kreise mit blur(90px), die dauerhaft WANDERN. Ein
+     bewegter Weichzeichner dieser Groesse muss bei jedem Bild neu
+     berechnet werden — das kostet mehr als alles andere zusammen.
+     Loesung: Bewegung aus, Weichzeichner kleiner, Ebene einfrieren.
+     Das Licht bleibt sichtbar, es steht nur still. */
+  .licht span {
+    animation: none !important;
+    will-change: auto !important;      /* keine Dauer-Ebene mehr halten */
+    filter: blur(48px) !important;     /* statt bis zu 90px */
+  }
+  /* Auch der grosse Hologramm-Weichzeichner wird kleiner (war 150px) */
+  .hologramm { filter: blur(70px) saturate(1.3) !important;
+               will-change: auto !important; }
+
+  /* Die uebrigen Dauer-Schleifen anhalten: das „Atmen" des NeonPunkt-
+     Lichts, die wandernden Sternspuren und der rutschende Scroll-Pfeil.
+     (Klassennamen aus der Datei geprueft, nicht geraten.) */
+  .licht-punkt span, .spuren i, .scrollhinweis::after {
+    animation: none !important;
+  }
+  .spuren { display: none; }   /* viele bewegte Einzelteile, kaum sichtbar */
+
+  /* backdrop-filter ist auf Mobilgeraeten teuer — nur der Kopf behaelt ihn */
+  .karte, .block, .stufe, .frage { backdrop-filter: none !important; }
+
+  /* Ruckelfreies Scrollen: die teuren Ebenen sind oben schon
+     stillgelegt. Zusätzlich bekommt jeder Abschnitt eine eigene
+     Zeichenebene, damit der Browser beim Scrollen nur den sichtbaren
+     Teil neu malen muss.
+     BEWUSST OHNE content-visibility: das Einblenden (.auf → .da) hängt
+     an einem IntersectionObserver, und ausgelagerte Abschnitte feuern
+     ihn nicht — die halbe Seite blieb dann blass stehen. */
+  main > section { contain: paint; }
+
+  /* Auftauch-Bewegung kurz halten, damit nichts nachzieht */
+  .auf {
+    transition-duration: .3s !important;
+    transform: none !important;
+  }
+
+  /* 3D-Neigung der Handy-Bilder auf Touch abschalten */
+  [data-neigen] { transform: none !important; }
+
+  html { scroll-behavior: auto; }   /* Sprungmarken ohne langes Gleiten */
+}
+
+/* Sehr schmale Geraete: kompaktere Abstaende, sonst scrollt man ewig */
+@media (max-width: 520px) {
+  .app-reihe { gap: .55rem; }
+  .app-kachel { padding: .8rem .45rem; }
+  .app-kachel span { font-size: .66rem; letter-spacing: .08em; }
+  .unter-block { margin-top: 2.2rem; }
+  .nbtn { width: 100%; }
+  .aktionen { flex-direction: column; align-items: stretch; }
+  .logo-paar { justify-content: center; gap: .8rem; }
+  .logo-paar img { max-width: 42vw; }
+}
+
+/* ============================================================
+   ECHTE LAUFENDE RUNDE — Balken, Anteile, Saisonsieger
+   Zahlen kommen aus runde.js (aus der echten App-Datenlage
+   gerechnet). Falk 31.07.: "vergleiche ziehen ... hoch
+   professionell ... Balkendiagramme".
+   ============================================================ */
+
+/* ---- Balkendiagramm: eine Zeile je Spieler bzw. Strecke ---- */
+.balken {
+  margin-top: clamp(1.4rem, 3vw, 2.2rem);
+  display: flex; flex-direction: column; gap: .55rem;
+}
+.balken-zeile {
+  display: grid; align-items: center;
+  grid-template-columns: 1.6rem 7.5rem 1fr 3rem;
+  gap: .7rem;
+  padding: .45rem .7rem;
+  border-radius: 11px;
+  background: rgba(255,255,255,.028);
+  border: 1px solid rgba(255,255,255,.07);
+}
+.balken-platz {
+  font-family: var(--schrift-kopf); font-weight: 800;
+  font-size: .92rem; color: var(--grau); text-align: right;
+}
+.balken-name {
+  font-family: var(--schrift-kopf); font-weight: 700;
+  font-size: .95rem; color: var(--creme);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.balken-spur {
+  position: relative; height: 13px; border-radius: 999px;
+  background: rgba(255,255,255,.07); overflow: hidden;
+}
+.balken-fuellung {
+  position: absolute; inset: 0 auto 0 0;
+  width: var(--anteil, 0%);
+  border-radius: 999px;
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--bf, var(--akzent)) 55%, transparent),
+    var(--bf, var(--akzent)));
+  box-shadow: 0 0 14px -3px var(--bf, var(--akzent));
+  /* Wächst beim Einblenden von links nach rechts */
+  transform-origin: left center;
+  animation: balken-wachsen .9s var(--weich) both;
+}
+@keyframes balken-wachsen { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.balken-wert {
+  font-family: var(--schrift-kopf); font-weight: 800;
+  font-size: 1.02rem; color: var(--creme); text-align: right;
+}
+/* Zusatzangabe (Trefferquote) — rutscht auf dem Handy in eine eigene Zeile */
+.balken-zusatz {
+  grid-column: 2 / -1;
+  font-size: .78rem; color: var(--grau); letter-spacing: .01em;
+}
+.balken-schmal .balken-zeile { grid-template-columns: 7.5rem 1fr 3rem; }
+
+/* ---- Anteilsbalken: exakt / dabei / daneben in einer Spur ---- */
+.anteil { margin-top: clamp(1.2rem, 2.6vw, 1.8rem); }
+.anteil-spur {
+  display: flex; height: 26px; border-radius: 999px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,.1);
+}
+.anteil-teil {
+  width: var(--w, 0%);
+  animation: balken-wachsen 1s var(--weich) both;
+  transform-origin: left center;
+}
+.a-exakt   { background: linear-gradient(180deg, #3ddc84, #1f9c58); }
+.a-dabei   { background: linear-gradient(180deg, #ffd166, #d9a441); }
+.a-daneben { background: linear-gradient(180deg, #4a5158, #343a40); }
+.anteil-legende {
+  display: flex; flex-wrap: wrap; gap: .5rem 1.4rem;
+  margin-top: .9rem; font-size: .88rem; color: var(--grau-hell);
+}
+.anteil-legende span { display: inline-flex; align-items: center; gap: .45rem; }
+.anteil-legende i {
+  width: 13px; height: 13px; border-radius: 4px; display: inline-block;
+}
+.anteil-legende b { color: var(--creme); font-weight: 800; }
+
+/* Der Merksatz unter der Bilanz — die stärkste Aussage des Abschnitts */
+.merksatz {
+  margin-top: 1.4rem; padding: 1rem 1.2rem;
+  border-left: 3px solid var(--akzent);
+  border-radius: 0 12px 12px 0;
+  background: rgba(255,255,255,.032);
+  font-size: 1.02rem; line-height: 1.6; color: var(--creme);
+  max-width: 62ch;
+}
+.merksatz b { color: var(--akzent-hell); font-weight: 800; }
+
+/* ---- Saisonsieger ---- */
+.sieger {
+  display: grid; gap: .8rem; margin-top: clamp(1.4rem, 3vw, 2rem);
+  grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+}
+.sieger-karte {
+  display: flex; flex-direction: column; gap: .2rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--radius-gross);
+  background: rgba(255,255,255,.03);
+}
+.sieger-karte.laufend {
+  border-color: color-mix(in srgb, var(--akzent) 55%, transparent);
+  background:
+    radial-gradient(120% 90% at 50% 0%,
+      color-mix(in srgb, var(--akzent) 14%, transparent), transparent 62%),
+    rgba(255,255,255,.03);
+}
+.sieger-karte > b {
+  font-family: var(--schrift-kopf); font-size: 1.5rem;
+  color: var(--akzent-hell); line-height: 1;
+}
+.sieger-name {
+  font-family: var(--schrift-kopf); font-weight: 700;
+  font-size: 1rem; color: var(--creme); margin-top: .35rem;
+}
+.sieger-punkte { font-size: .85rem; color: var(--grau); }
+.sieger-hinweis {
+  margin-top: .35rem; align-self: flex-start;
+  font-size: .68rem; letter-spacing: .12em; text-transform: uppercase;
+  font-weight: 700; color: var(--akzent-hell);
+  padding: 3px 8px; border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--akzent) 50%, transparent);
+}
+
+/* ---- Handy: Balken schmaler aufteilen ---- */
+@media (max-width: 560px) {
+  .balken-zeile { grid-template-columns: 1.3rem 5.6rem 1fr 2.5rem; gap: .5rem; }
+  .balken-name { font-size: .88rem; }
+  .balken-wert { font-size: .95rem; }
+  .balken-zusatz { font-size: .72rem; }
+  .balken-schmal .balken-zeile { grid-template-columns: 5.6rem 1fr 2.5rem; }
+  .anteil-legende { font-size: .82rem; gap: .4rem 1rem; }
+  .merksatz { font-size: .96rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .balken-fuellung, .anteil-teil { animation: none; }
+}
