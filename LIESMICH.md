@@ -44,6 +44,35 @@ Vergleichs- und Fragen-Abschnitte sind raus).
 Neu hinzugekommen ist der Block **`studio`** in `texte.js` — die Verweise zurück
 ins Entwicklerstudio.
 
+## Was auf der Startseite steht
+
+1. **Kopf** — Logo-Paar (App-Logo + gemeinsames Kooperationslogo), Kernsatz
+2. **Aktionen** + **Store-Stand** (ehrliche Zeile, siehe unten)
+3. **Die Startseite der App** — Screenshot mit vier nummerierten Punkten
+4. **Was drinsteckt** — Zahlen, Funktionsliste, Anzeigen
+5. **Fünf Wertungssysteme, eine Scheibe** — die interaktive Zielscheibe:
+   Zone antippen, sofort die Punkte in allen fünf Systemen sehen
+6. **Funktionsblöcke** — Runden, Parcours, Ausrüstung, Statistik
+7. **Deine Daten gehören dir** + Versprechen
+8. **Drei Stufen** — Gratis, Premium, Premium+
+9. **Wie ein Projekt entsteht** — fünf Schritte von der Idee bis zum Store
+10. **Ein Mensch, ein Studio** — Verweise ins Entwicklerstudio
+
+`details.html` trägt alles Ausführliche: Bogenarten, Spine-Rechner, Glossar,
+Verbände, Parcours-Begriffe.
+
+## 🔴 Store-Knöpfe: erst wenn die Stores antworten
+
+Statt Knöpfen steht dort eine Statuszeile (`instinct.storeStatus` in `texte.js`),
+weil **beide Store-Adressen noch 404 liefern**, solange die App in Prüfung ist.
+Ein Knopf auf eine Fehlerseite ist schlechter als keiner.
+
+**Sobald die App freigegeben ist**, die Zeile durch ein Knopfpaar ersetzen:
+- Play: `https://play.google.com/store/apps/details?id=de.bogensportinstinct.instinct_scoring`
+- Apple: `https://apps.apple.com/de/app/id6795424223`
+
+Vorher **immer prüfen**, ob die Adresse wirklich antwortet.
+
 ## Alle Wege zurück ins Entwicklerstudio
 
 Von jeder Seite aus erreichbar:
