@@ -81,6 +81,14 @@
         <a class="nbtn b-scratch" href="details.html">
           <span data-t="instinct.mehrKnopf">Alles über Instinct Scoring</span></a>
       </div>
+      <!-- 🔴 Store-ZEILE, keine Knöpfe: Play und App Store liefern beide noch
+           404, weil die App gerade in Prüfung ist. Ein Knopf, der auf eine
+           Fehlerseite führt, ist schlimmer als gar keiner. Sobald die Stores
+           antworten, wird daraus ein Knopfpaar (Adressen stehen im LIESMICH). -->
+      <p class="store-status">
+        <span class="store-punkt" aria-hidden="true"></span>
+        <span data-t="instinct.storeStatus"></span>
+      </p>
       <p class="preis" data-t="instinct.preis"></p>
     </section>
 
@@ -116,6 +124,23 @@
           data-t="instinct.umfangAnzeigenTitel"></h3>
       <ul class="anzeigen" id="instinct-umfang-anzeigen"></ul>
       <p class="preis" data-t="instinct.umfangFilter"></p>
+    </section>
+
+    <!-- ---------- Zielscheibe zum Antippen ----------
+         Das interaktivste Stück der Seite: Zone antippen, sofort sehen, was
+         sie in jedem der fünf Systeme zählt. `scheibeEinrichten()` in app.js
+         zeichnet SVG und Tafel aus `instinct.scheibeZonen`. -->
+    <section class="unter-block" id="scheibe">
+      <h2 data-t="instinct.scheibeTitel">Fünf Wertungssysteme, eine Scheibe</h2>
+      <p class="leise" style="max-width:62ch" data-t="instinct.scheibeText"></p>
+      <div class="scheibe-block">
+        <div class="scheibe-buehne" id="scheibe-buehne"></div>
+        <div>
+          <div id="scheibe-tafel"></div>
+          <p class="preis" style="margin-top:1.2rem"
+             data-t="instinct.scheibeFussnote"></p>
+        </div>
+      </div>
     </section>
 
     <!-- ---------- Funktionsblöcke ---------- -->
@@ -157,12 +182,26 @@
       </div>
     </section>
 
+    <!-- ---------- Wie die App entstand ----------
+         Falks Ablauf aus texte.js (`ueber.ablauf`) — erzählt die Herkunft der
+         App und macht die Seite informativ statt nur werblich. -->
+    <section class="unter-block" id="entstehung">
+      <h2 data-t="ueber.ablaufTitel">Wie ein Projekt entsteht</h2>
+      <p class="leise" style="max-width:64ch" data-t="ueber.text"></p>
+      <div class="schritte" id="ueber-ablauf"></div>
+      <p class="leise" style="max-width:64ch;margin-top:1.4rem"
+         data-t="ueber.textZwei"></p>
+    </section>
+
     <!-- ---------- Entwicklerstudio ---------- -->
     <section class="unter-block" id="studio">
       <div class="karte">
-        <h2 style="font-size:clamp(1.3rem,2.6vw,1.8rem)">Wer dahintersteckt</h2>
+        <h2 style="font-size:clamp(1.3rem,2.6vw,1.8rem)"
+            data-t="ueber.titel">Ein Mensch, ein Studio</h2>
         <p data-t="studio.text"></p>
-        <div class="aktionen" style="margin-top:1.2rem">
+        <div class="zahlen" id="ueber-zahlen"
+             style="margin-top:clamp(1.2rem,2.4vw,1.8rem)"></div>
+        <div class="aktionen" style="margin-top:1.4rem">
           <a class="nbtn b-ripple"
              href="https://alonepard10501.github.io/fanica/"
              target="_blank" rel="noopener">

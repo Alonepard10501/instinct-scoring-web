@@ -2550,3 +2550,29 @@ body { line-height: 1.72; letter-spacing: .005em; }
 @media (prefers-reduced-motion: reduce) {
   .balken-fuellung, .anteil-teil { animation: none; }
 }
+
+/* ============================================================
+   STORE-STATUS — ehrlicher Zwischenstand statt toter Knöpfe.
+   Solange die App bei Apple und Play in Prüfung ist, führen die
+   Store-Adressen auf 404. Hier steht deshalb eine ruhige Zeile mit
+   pulsierendem Punkt, kein Knopf, der ins Leere führt.
+   ============================================================ */
+.store-status {
+  display: flex; align-items: flex-start; gap: .6rem;
+  margin-top: 1.1rem; max-width: 58ch;
+  font-size: .92rem; line-height: 1.55; color: var(--grau-hell);
+}
+.store-punkt {
+  flex: 0 0 auto; width: 9px; height: 9px; margin-top: .45rem;
+  border-radius: 50%; background: var(--akzent);
+  box-shadow: 0 0 0 0 var(--akzent);
+  animation: store-puls 2.6s ease-out infinite;
+}
+@keyframes store-puls {
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--akzent) 60%, transparent); }
+  70%  { box-shadow: 0 0 0 9px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .store-punkt { animation: none; }
+}
