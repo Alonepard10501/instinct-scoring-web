@@ -278,7 +278,7 @@ de: {
     ],
     spineErgebnisTitel: "Das kommt heraus",
     spineErgebnis: "Zwei Werte samt Toleranzband: den Holzspine in Pfund und den Carbonspine als Zahl. Dazu die Einordnung „eher hart“, „optimal“ oder „eher weich“ und die handelsüblichen Spine-Größen von 250 bis 1500, damit du weißt, welchen Schaft du tatsächlich kaufen kannst. Das Ergebnis lässt sich direkt als neues Pfeilsetup übernehmen.",
-    spineHinweis: "Der Spine-Rechner gehört zu Premium. Rechenweg nach dem Vorbild von intuitivbogen.at.",
+    spineHinweis: "Der Spine-Rechner gehört zu Premium.",
 
     /* --- Erklärteil: Parcours, Pflock, Duell --- */
     parcoursTitel: "Parcours, Pflock, Duell — kurz erklärt",
@@ -703,7 +703,7 @@ en: {
     ],
     spineErgebnisTitel: "What comes out",
     spineErgebnis: "Two values with a tolerance band: wooden spine in pounds and carbon spine as a number. Plus a verdict — „rather stiff“, „optimal“ or „rather weak“ — and the shop-standard spine sizes from 250 to 1500, so you know which shaft you can actually buy. The result can be saved straight away as a new arrow setup.",
-    spineHinweis: "The spine calculator is part of Premium. Method modelled on intuitivbogen.at.",
+    spineHinweis: "The spine calculator is part of Premium.",
 
     parcoursTitel: "Course, stake, duel — briefly explained",
     parcoursBegriffe: [
