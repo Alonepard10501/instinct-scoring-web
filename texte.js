@@ -336,7 +336,7 @@ de: {
     /* Ehrlicher Zwischenstand statt toter Store-Knöpfe — beide Store-Seiten
        liefern noch 404, solange die Prüfung läuft. Text austauschen, sobald
        die App freigegeben ist. */
-    storeStatus: "Im App Store ist die App freigegeben. Bei Google Play läuft noch der geschlossene Test — bis zur Freigabe kannst du sie dort nicht laden, wohl aber hier im Browser ausprobieren.",
+    storeStatus: "Im App Store ist die App freigegeben. Bei Google Play läuft noch der geschlossene Test — sobald sie dort freigeschaltet ist, steht der Knopf auch hier.",
     mehrKnopf: "Alles über Instinct Scoring",
     mehrText: "Die vier Bogenarten mit Zeichnung, der Spine-Rechner erklärt, das Glossar der Bogen-Begriffe, wer welche Wertung festlegt und die drei Preisstufen im Vergleich.",
     bildStart: "bilder/instinct/start.webp",
@@ -772,7 +772,7 @@ en: {
 
     zielgruppe: ["Recurve", "Longbow", "Barebow", "Compound", "traditional"],
     preis: "Seven days of Premium+ free, then from €1.99 per four weeks. Shooting and scoring rounds stays free forever.",
-    storeStatus: "The app is released on the App Store. On Google Play it is still in closed testing — until release you cannot download it there, but you can try it here in your browser.",
+    storeStatus: "The app is released on the App Store. On Google Play it is still in closed testing — as soon as it goes live there, the button will appear here too.",
     mehrKnopf: "Everything about Instinct Scoring",
     mehrText: "The four bow types with drawings, the spine calculator explained, the glossary of archery terms, who defines which scoring and the three tiers compared.",
     bildStart: "bilder/instinct/start.webp",
