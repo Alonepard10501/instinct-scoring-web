@@ -315,7 +315,7 @@ de: {
         kann: ["Beliebig viele Schützen", "Gruppen & Teams",
                "Mehrere Bögen & Setups", "Komplette Statistik",
                "Turniere", "Spine-Rechner", "Sicherung einspielen"],
-        grenze: "Historie 3 Runden · 10 Symbole · 1 Spine-Profil",
+        grenze: "Historie 3 Runden · 7 Farben · 10 Symbole · 1 Spine-Profil",
         hervor: true
       },
       {
@@ -325,7 +325,8 @@ de: {
         kann: ["Volle Historie", "Duell-Modus",
                "Parcours-Suche nach PLZ & Umkreis",
                "Alle 30 Farben & Symbole", "Spine-Profile speichern",
-               "Statistik-Export als CSV", "App-Symbol wechseln"],
+               "Statistik-Export als CSV", "Ergebnis als PDF teilen",
+               "Fotos & Tierart nachträglich ändern", "App-Symbol wechseln"],
         grenze: "Keine Grenzen"
       }
     ],
@@ -335,7 +336,7 @@ de: {
     /* Ehrlicher Zwischenstand statt toter Store-Knöpfe — beide Store-Seiten
        liefern noch 404, solange die Prüfung läuft. Text austauschen, sobald
        die App freigegeben ist. */
-    storeStatus: "Die App liegt bei Google Play und im App Store zur Prüfung. Bis zur Freigabe kannst du sie hier im Browser ausprobieren.",
+    storeStatus: "Im App Store ist die App freigegeben. Bei Google Play läuft noch der geschlossene Test — bis zur Freigabe kannst du sie dort nicht laden, wohl aber hier im Browser ausprobieren.",
     mehrKnopf: "Alles über Instinct Scoring",
     mehrText: "Die vier Bogenarten mit Zeichnung, der Spine-Rechner erklärt, das Glossar der Bogen-Begriffe, wer welche Wertung festlegt und die drei Preisstufen im Vergleich.",
     bildStart: "bilder/instinct/start.webp",
@@ -753,7 +754,7 @@ en: {
         kann: ["Any number of archers", "Groups & teams",
                "Several bows & setups", "Full statistics",
                "Tournaments", "Spine calculator", "Restore a backup"],
-        grenze: "History of 3 rounds · 10 symbols · 1 spine profile",
+        grenze: "History of 3 rounds · 7 colours · 10 symbols · 1 spine profile",
         hervor: true
       },
       {
@@ -763,14 +764,15 @@ en: {
         kann: ["Full history", "Duel mode",
                "Course search by postcode & radius",
                "All 30 colours & symbols", "Save spine profiles",
-               "Statistics export as CSV", "Change the app icon"],
+               "Statistics export as CSV", "Share results as PDF",
+               "Edit photos & animal type later", "Change the app icon"],
         grenze: "No limits"
       }
     ],
 
     zielgruppe: ["Recurve", "Longbow", "Barebow", "Compound", "traditional"],
     preis: "Seven days of Premium+ free, then from €1.99 per four weeks. Shooting and scoring rounds stays free forever.",
-    storeStatus: "The app is under review at Google Play and the App Store. Until it is released you can try it here in your browser.",
+    storeStatus: "The app is released on the App Store. On Google Play it is still in closed testing — until release you cannot download it there, but you can try it here in your browser.",
     mehrKnopf: "Everything about Instinct Scoring",
     mehrText: "The four bow types with drawings, the spine calculator explained, the glossary of archery terms, who defines which scoring and the three tiers compared.",
     bildStart: "bilder/instinct/start.webp",

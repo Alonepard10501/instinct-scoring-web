@@ -16,7 +16,7 @@ Repo: `Alonepard10501/instinct-scoring-web`, GitHub Pages aus `main` / root.
 
 Änderung veröffentlichen:
 ```bash
-cd "C:\Users\falkc\Desktop\KI-Studio\Obsidian Vault\Projekte\Webseite-Instinct"
+cd "C:\Users\Falk\Desktop\KI-Studio\Projekte\Webseiten\Webseite-Instinct"
 git add -A && git commit -m "Was geändert wurde" && git push
 ```
 Pages baut selbst neu, nach etwa einer Minute ist es live.
@@ -35,7 +35,7 @@ Pages baut selbst neu, nach etwa einer Minute ist es live.
 
 ## Woher die Inhalte kommen
 
-**1:1 übernommen aus der Entwickler-Website** (`Projekte\Webseite`), zugeschnitten
+**1:1 übernommen aus der Entwickler-Website** (`KI-Studio\Projekte\Webseiten\Webseite`), zugeschnitten
 auf Instinct: `texte.js` von 98.553 auf rund 49.000 Zeichen (nur die Blöcke
 `meta`, `nav`, `instinct`, `aktion`, `ueber`, `kontakt`, `fuss`, `zurueckKnopf`),
 `inhalte.js` von 26.168 auf gut 13.000 Zeichen (die FaNiCa-, NeonPunkt-,
@@ -87,7 +87,7 @@ Alle Ziele wurden geprüft und antworten mit HTTP 200.
 ## Ansehen / prüfen
 
 ```bash
-python -m http.server 8877 --directory "C:\Users\falkc\Desktop\KI-Studio\Obsidian Vault\Projekte\Webseite-Instinct"
+python -m http.server 8877 --directory "C:\Users\falkc\Desktop\KI-Studio\Obsidian Vault\Projekte\Webseiten Online\Webseite-Instinct"
 ```
 Dann `http://127.0.0.1:8877`. **Eine Datei-URL reicht nicht** — die Skripte
 laden nach.

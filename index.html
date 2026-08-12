@@ -74,17 +74,23 @@
     <!-- ---------- Aktionen ganz oben ---------- -->
     <section class="unter-block">
       <div class="aktionen">
+        <!-- 🔴 Apple ist seit 12.08.2026 freigegeben (Abruf geprüft) —
+             deshalb ein echter Knopf. Google Play liefert weiter 404
+             (geschlossener Test), darum dort NUR die Statuszeile: Ein
+             Knopf, der auf eine Fehlerseite führt, ist schlimmer als
+             gar keiner. Sobald Play antwortet, denselben Knopfbau wie
+             beim App Store ergänzen (Play-Adresse steht im LIESMICH). -->
         <a class="nbtn b-grass gross-knopf"
+           href="https://apps.apple.com/de/app/instinct-scoring/id6795424223"
+           target="_blank" rel="noopener">
+          <span data-t="aktion.apple">Im App Store laden</span></a>
+        <a class="nbtn b-grass"
            href="https://alonepard10501.github.io/instinct-scoring/"
            target="_blank" rel="noopener">
           <span data-t="aktion.browser">Im Browser testen</span></a>
         <a class="nbtn b-scratch" href="details.html">
           <span data-t="instinct.mehrKnopf">Alles über Instinct Scoring</span></a>
       </div>
-      <!-- 🔴 Store-ZEILE, keine Knöpfe: Play und App Store liefern beide noch
-           404, weil die App gerade in Prüfung ist. Ein Knopf, der auf eine
-           Fehlerseite führt, ist schlimmer als gar keiner. Sobald die Stores
-           antworten, wird daraus ein Knopfpaar (Adressen stehen im LIESMICH). -->
       <p class="store-status">
         <span class="store-punkt" aria-hidden="true"></span>
         <span data-t="instinct.storeStatus"></span>
