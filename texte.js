@@ -202,9 +202,9 @@ de: {
     ],
 
     datenTitel: "Deine Daten gehören dir",
-    datenText: "Kein Konto. Keine Anmeldung. Keine Werbung. Kein Tracking. Die App braucht das Internet nie — sie funktioniert im Wald genauso wie zu Hause.",
+    datenText: "Kein Konto. Keine Anmeldung. Keine Werbung. Kein Tracking. Zum Schießen und Werten braucht die App kein Internet — sie funktioniert im Wald genauso wie zu Hause. Nur die Turnier-Termine holt sie online, wenn du sie aufrufst.",
     datenPunkte: [
-      "100 % offline — alles bleibt auf deinem Gerät",
+      "Deine Runden bleiben auf deinem Gerät — kein Konto, kein Server",
       "Backup als Datei, jederzeit wieder einspielbar",
       "Ergebnis-Bericht als PDF teilen"
     ],
@@ -721,9 +721,9 @@ en: {
     ],
 
     datenTitel: "Your data belongs to you",
-    datenText: "No account. No sign-up. No ads. No tracking. The app never needs the internet — it works in the woods just as it does at home.",
+    datenText: "No account. No sign-up. No ads. No tracking. For shooting and scoring the app needs no internet — it works in the woods just as it does at home. Only the tournament dates are fetched online when you open them.",
     datenPunkte: [
-      "100 % offline — everything stays on your device",
+      "Your rounds stay on your device — no account, no server",
       "Backup as a file, restorable any time",
       "Share your result report as a PDF"
     ],
